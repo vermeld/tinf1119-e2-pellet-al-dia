@@ -1,0 +1,64 @@
+<PantallaLista>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'fire'
+            MDTopAppBarTitle:
+                text: 'Puntos en Temuco'
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: [dp(16), dp(4), dp(16), dp(12)]
+            spacing: dp(12)
+
+            TextoSuave:
+                id: resumen
+
+            # Filtros: con stock / todos + sector
+            MDBoxLayout:
+                adaptive_height: True
+                spacing: dp(8)
+                MDButton:
+                    id: f_con
+                    style: 'filled' if root.solo_con else 'outlined'
+                    on_release: root.poner_filtro(True)
+                    MDButtonText:
+                        text: 'Con stock'
+                MDButton:
+                    id: f_todos
+                    style: 'outlined' if root.solo_con else 'filled'
+                    on_release: root.poner_filtro(False)
+                    MDButtonText:
+                        text: 'Todos'
+                MDButton:
+                    id: f_comuna
+                    style: 'tonal'
+                    on_release: root.abrir_comunas(self)
+                    MDButtonIcon:
+                        icon: 'map-marker'
+                    MDButtonText:
+                        text: root.comuna
+
+            MDScrollView:
+                do_scroll_x: False
+                MDBoxLayout:
+                    id: lista
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    spacing: dp(10)
+                    padding: [0, 0, 0, dp(8)]
+
+            # Publicar: siempre visible bajo la lista
+            BotonAncho:
+                on_release: app.ir_a('form')
+                MDButtonIcon:
+                    icon: 'plus'
+                TextoBoton:
+                    text: 'Publicar un punto'
+

@@ -1,0 +1,324 @@
+<BotonEstrella@MDIconButton>:
+    n: 1
+    icon: 'star' if self.parent and self.parent.valor >= self.n else 'star-outline'
+    theme_icon_color: 'Custom'
+    icon_color: 0.85, 0.6, 0.0, 1
+    theme_font_size: 'Custom'
+    font_size: sp(30)
+    on_release: self.parent.valor = self.n
+
+<PantallaDetalle>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'arrow-left'
+                    on_release: app.volver()
+            MDTopAppBarTitle:
+                text: 'Detalle del punto'
+
+        MDScrollView:
+            id: scroll
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: [dp(16), dp(8), dp(16), dp(24)]
+                spacing: dp(14)
+
+                MDLabel:
+                    id: nombre
+                    font_style: 'Headline'
+                    role: 'small'
+                    bold: True
+                    adaptive_height: True
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    MDIcon:
+                        icon: 'comment-text-outline'
+                        theme_icon_color: 'Secondary'
+                        pos_hint: {'center_y': .5}
+                    TextoSuave:
+                        id: estrellas_txt
+                        pos_hint: {'center_y': .5}
+                TextoSuave:
+                    id: subtitulo
+
+                # Estado grande, con color + ícono + texto (no depende solo del color)
+                MDCard:
+                    style: 'filled'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(12)
+                    radius: [dp(14)]
+                    theme_bg_color: 'Custom'
+                    md_bg_color: root.color_estado
+                    MDIcon:
+                        id: icono_estado
+                        font_size: sp(34)
+                        theme_icon_color: 'Custom'
+                        icon_color: 1, 1, 1, 1
+                        pos_hint: {'center_y': .5}
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        pos_hint: {'center_y': .5}
+                        MDLabel:
+                            id: estado
+                            font_style: 'Title'
+                            role: 'medium'
+                            bold: True
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+                            adaptive_height: True
+                        MDLabel:
+                            id: precio
+                            font_style: 'Body'
+                            role: 'large'
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+                            adaptive_height: True
+
+                # Confiabilidad del dato de stock
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: [dp(16), dp(12), dp(8), dp(8)]
+                    spacing: dp(6)
+                    radius: [dp(14)]
+                    MDLabel:
+                        text: 'Confiabilidad del dato de stock'
+                        font_style: 'Body'
+                        role: 'medium'
+                        theme_text_color: 'Secondary'
+                        adaptive_height: True
+                    MDBoxLayout:
+                        adaptive_height: True
+                        spacing: dp(10)
+                        EstrellasConf:
+                            valor: root.conf_valor
+                            color: root.color_conf
+                            tam: sp(32)
+                            pos_hint: {'center_y': .5}
+                        MDLabel:
+                            id: conf_titulo
+                            font_style: 'Title'
+                            role: 'medium'
+                            bold: True
+                            theme_text_color: 'Custom'
+                            text_color: root.color_conf_texto
+                            adaptive_height: True
+                            pos_hint: {'center_y': .5}
+                    MDLabel:
+                        id: conf_detalle
+                        font_style: 'Body'
+                        role: 'small'
+                        theme_text_color: 'Secondary'
+                        adaptive_height: True
+                    MDButton:
+                        style: 'text'
+                        on_release: root.explicar_confianza()
+                        MDButtonIcon:
+                            icon: 'information-outline'
+                        MDButtonText:
+                            text: '¿Cómo se calcula?'
+
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(14)
+                    radius: [dp(14)]
+                    FilaIcono:
+                        id: direccion
+                        icono: 'map-marker'
+                    FilaIcono:
+                        id: distancia
+                        icono: 'walk'
+                    FilaIcono:
+                        id: horario
+                        icono: 'clock-outline'
+                    FilaIcono:
+                        id: visto
+                        icono: 'account-eye'
+
+                BotonAncho:
+                    theme_bg_color: 'Custom'
+                    md_bg_color: app.C_RUTA
+                    on_release: app.como_llegar(root.punto_id)
+                    MDButtonIcon:
+                        icon: 'directions'
+                        theme_icon_color: 'Custom'
+                        icon_color: 1, 1, 1, 1
+                    TextoBoton:
+                        text: 'Cómo llegar'
+                        theme_text_color: 'Custom'
+                        text_color: 1, 1, 1, 1
+                BotonAncho:
+                    style: 'outlined'
+                    on_release: app.ver_en_mapa(root.punto_id)
+                    MDButtonIcon:
+                        icon: 'map-search-outline'
+                    TextoBoton:
+                        text: 'Ver en el mapa'
+
+                Titulo:
+                    text: '¿Pasaste por aquí hace poco?'
+                TextoSuave:
+                    text: 'Tu reporte sube la confiabilidad del dato y te da puntos de reputación.'
+
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    MDButton:
+                        style: 'filled'
+                        theme_width: 'Custom'
+                        size_hint_x: .5
+                        height: dp(52)
+                        theme_bg_color: 'Custom'
+                        md_bg_color: app.C_HAY
+                        on_release: root.pedir_confirmacion(True)
+                        MDButtonIcon:
+                            icon: 'check'
+                            theme_icon_color: 'Custom'
+                            icon_color: 1, 1, 1, 1
+                        TextoBoton:
+                            text: 'Sigue habiendo'
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+                    MDButton:
+                        style: 'filled'
+                        theme_width: 'Custom'
+                        size_hint_x: .5
+                        height: dp(52)
+                        theme_bg_color: 'Custom'
+                        md_bg_color: app.C_NOHAY
+                        on_release: root.pedir_confirmacion(False)
+                        MDButtonIcon:
+                            icon: 'close'
+                            theme_icon_color: 'Custom'
+                            icon_color: 1, 1, 1, 1
+                        TextoBoton:
+                            text: 'Ya no hay'
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+
+                # ---- opiniones
+                Titulo:
+                    id: titulo_opiniones
+                    text: 'Opiniones de vecinos'
+                MDBoxLayout:
+                    id: opiniones
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    spacing: dp(8)
+
+                # Escribir opinión (solo con sesión)
+                MDCard:
+                    style: 'filled'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height if app.con_sesion else 0
+                    opacity: 1 if app.con_sesion else 0
+                    disabled: not app.con_sesion
+                    padding: dp(14)
+                    spacing: dp(10)
+                    radius: [dp(14)]
+                    Titulo:
+                        text: 'Edita tu opinión' if root.tiene_opinion else 'Deja tu opinión'
+                    TextoSuave:
+                        text: '¿Cómo calificas este punto? (atención, precio, si el dato era correcto)'
+                    MDBoxLayout:
+                        id: selector_estrellas
+                        valor: 0
+                        adaptive_size: True
+                        spacing: dp(2)
+                        BotonEstrella:
+                            n: 1
+                        BotonEstrella:
+                            n: 2
+                        BotonEstrella:
+                            n: 3
+                        BotonEstrella:
+                            n: 4
+                        BotonEstrella:
+                            n: 5
+                    TextoSuave:
+                        text: '¿Había pellet cuando fuiste? (opcional, suma un reporte)'
+                    MDBoxLayout:
+                        adaptive_height: True
+                        spacing: dp(6)
+                        MDButton:
+                            style: 'filled' if root.mi_reporte == 'si' else 'outlined'
+                            on_release: root.mi_reporte = '' if root.mi_reporte == 'si' else 'si'
+                            MDButtonText:
+                                text: 'Sí había'
+                        MDButton:
+                            style: 'filled' if root.mi_reporte == 'no' else 'outlined'
+                            on_release: root.mi_reporte = '' if root.mi_reporte == 'no' else 'no'
+                            MDButtonText:
+                                text: 'No había'
+                    MDTextField:
+                        id: texto_opinion
+                        mode: 'outlined'
+                        multiline: True
+                        max_height: dp(120)
+                        MDTextFieldHintText:
+                            text: 'Cuéntales a los demás cómo te fue'
+                        MDTextFieldHelperText:
+                            text: 'Entre 5 y 280 caracteres'
+                            mode: 'persistent'
+                    Widget:
+                        size_hint_y: None
+                        height: dp(6)
+                    MDLabel:
+                        id: error_opinion
+                        text: ''
+                        bold: True
+                        theme_text_color: 'Custom'
+                        text_color: app.C_NOHAY
+                        adaptive_height: True
+                    BotonAncho:
+                        on_release: root.publicar_opinion()
+                        MDButtonIcon:
+                            icon: 'send'
+                        TextoBoton:
+                            text: 'Actualizar opinión' if root.tiene_opinion else 'Publicar opinión'
+
+                # Invitación a entrar (sin sesión)
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height if not app.con_sesion else 0
+                    opacity: 0 if app.con_sesion else 1
+                    disabled: app.con_sesion
+                    padding: dp(14)
+                    spacing: dp(10)
+                    radius: [dp(14)]
+                    Texto:
+                        text: 'Entra con tu cuenta para opinar, calificar opiniones y reportar el stock.'
+                    MDBoxLayout:
+                        adaptive_height: True
+                        spacing: dp(8)
+                        MDButton:
+                            style: 'filled'
+                            on_release: app.ir_a('entrar')
+                            MDButtonText:
+                                text: 'Entrar'
+                        MDButton:
+                            style: 'outlined'
+                            on_release: app.ir_a('registro')
+                            MDButtonText:
+                                text: 'Crear cuenta'

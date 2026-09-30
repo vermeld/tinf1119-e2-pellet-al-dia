@@ -1,0 +1,359 @@
+# Estilos y widgets reutilizables (KivyMD).
+
+<Titulo@MDLabel>:
+    font_style: 'Title'
+    role: 'medium'
+    bold: True
+    adaptive_height: True
+
+<Texto@MDLabel>:
+    font_style: 'Body'
+    role: 'large'
+    adaptive_height: True
+
+<TextoSuave@MDLabel>:
+    font_style: 'Body'
+    role: 'medium'
+    theme_text_color: 'Secondary'
+    adaptive_height: True
+
+# Botón ancho de acción principal (Material "filled").
+<BotonAncho@MDButton>:
+    style: 'filled'
+    theme_width: 'Custom'
+    size_hint_x: 1
+    height: dp(52)
+
+# Texto de botón grande y legible (accesibilidad).
+<TextoBoton@MDButtonText>:
+    theme_font_size: 'Custom'
+    font_size: sp(16)
+    bold: True
+
+# Fila con ícono + texto, usada en el detalle y la ayuda.
+<FilaIcono@MDBoxLayout>:
+    icono: 'information'
+    texto: ''
+    adaptive_height: True
+    spacing: dp(12)
+    MDIcon:
+        icon: root.icono
+        theme_icon_color: 'Custom'
+        icon_color: app.theme_cls.primaryColor
+        pos_hint: {'center_y': .5}
+    MDLabel:
+        text: root.texto
+        font_style: 'Body'
+        role: 'large'
+        adaptive_height: True
+        pos_hint: {'center_y': .5}
+
+<PuntoCard>:
+    style: 'outlined'
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    padding: [dp(20), dp(14), dp(16), dp(14)]
+    spacing: dp(4)
+    radius: [dp(14)]
+    on_release: app.ver_detalle(root.punto_id)
+    canvas.after:
+        Color:
+            rgba: root.color_banda
+        RoundedRectangle:
+            pos: self.x, self.y
+            size: dp(7), self.height
+            radius: [dp(14), 0, 0, dp(14)]
+
+    MDBoxLayout:
+        adaptive_height: True
+        spacing: dp(8)
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            MDLabel:
+                text: root.nombre
+                font_style: 'Title'
+                role: 'medium'
+                bold: True
+                adaptive_height: True
+                shorten: True
+                shorten_from: 'right'
+            MDLabel:
+                text: root.subtitulo
+                font_style: 'Body'
+                role: 'medium'
+                theme_text_color: 'Secondary'
+                adaptive_height: True
+        MDLabel:
+            text: root.precio_txt
+            markup: True
+            font_style: 'Title'
+            role: 'medium'
+            bold: True
+            halign: 'right'
+            size_hint_x: None
+            width: dp(96)
+            size_hint_y: None
+            # sin precio: alto 0 (un MDLabel vacío con adaptive_height queda en 100px)
+            height: self.texture_size[1] if self.text else 0
+            text_size: self.width, None
+
+    MDBoxLayout:
+        adaptive_height: True
+        spacing: dp(6)
+        padding: [0, dp(4), 0, 0]
+        MDIcon:
+            icon: root.icono_estado
+            theme_icon_color: 'Custom'
+            icon_color: root.color_banda
+            pos_hint: {'center_y': .5}
+        MDLabel:
+            text: root.estado
+            font_style: 'Body'
+            role: 'large'
+            bold: True
+            theme_text_color: 'Custom'
+            text_color: root.color_banda
+            adaptive_height: True
+            pos_hint: {'center_y': .5}
+
+    MDLabel:
+        text: root.direccion
+        font_style: 'Body'
+        role: 'medium'
+        adaptive_height: True
+
+    FilaConfianza:
+        valor: root.conf_valor
+        color: root.conf_color
+        color_texto: root.conf_color_texto
+        numero: root.conf_numero
+        opiniones: root.estrellas_txt
+
+    MDLabel:
+        text: root.visto_txt
+        font_style: 'Body'
+        role: 'small'
+        theme_text_color: 'Custom'
+        text_color: root.color_visto
+        adaptive_height: True
+
+# Estrellas de confiabilidad (admite medias estrellas). El color lo decide
+# confianza.py: amarillo = 5, rojo = 1½ o menos, verde = el resto.
+<EstrellasConf@MDBoxLayout>:
+    valor: 0
+    color: 0, 0, 0, 1
+    tam: sp(18)
+    adaptive_size: True
+    spacing: dp(1)
+    MDIcon:
+        icon: 'star' if root.valor >= 1 else ('star-half-full' if root.valor >= 0.5 else 'star-outline')
+        theme_font_size: 'Custom'
+        font_size: root.tam
+        theme_icon_color: 'Custom'
+        icon_color: root.color
+        size_hint: None, None
+        size: root.tam, root.tam
+        pos_hint: {'center_y': .5}
+    MDIcon:
+        icon: 'star' if root.valor >= 2 else ('star-half-full' if root.valor >= 1.5 else 'star-outline')
+        theme_font_size: 'Custom'
+        font_size: root.tam
+        theme_icon_color: 'Custom'
+        icon_color: root.color
+        size_hint: None, None
+        size: root.tam, root.tam
+        pos_hint: {'center_y': .5}
+    MDIcon:
+        icon: 'star' if root.valor >= 3 else ('star-half-full' if root.valor >= 2.5 else 'star-outline')
+        theme_font_size: 'Custom'
+        font_size: root.tam
+        theme_icon_color: 'Custom'
+        icon_color: root.color
+        size_hint: None, None
+        size: root.tam, root.tam
+        pos_hint: {'center_y': .5}
+    MDIcon:
+        icon: 'star' if root.valor >= 4 else ('star-half-full' if root.valor >= 3.5 else 'star-outline')
+        theme_font_size: 'Custom'
+        font_size: root.tam
+        theme_icon_color: 'Custom'
+        icon_color: root.color
+        size_hint: None, None
+        size: root.tam, root.tam
+        pos_hint: {'center_y': .5}
+    MDIcon:
+        icon: 'star' if root.valor >= 5 else ('star-half-full' if root.valor >= 4.5 else 'star-outline')
+        theme_font_size: 'Custom'
+        font_size: root.tam
+        theme_icon_color: 'Custom'
+        icon_color: root.color
+        size_hint: None, None
+        size: root.tam, root.tam
+        pos_hint: {'center_y': .5}
+
+# «Confiabilidad» + estrellas de confiabilidad + opiniones, en una línea (lista y mapa).
+<FilaConfianza@MDBoxLayout>:
+    valor: 0
+    color: 0, 0, 0, 1
+    color_texto: 0, 0, 0, 1
+    numero: ''
+    opiniones: ''
+    adaptive_height: True
+    spacing: dp(4)
+    MDLabel:
+        text: 'Confiabilidad'
+        font_style: 'Body'
+        role: 'medium'
+        bold: True
+        theme_text_color: 'Custom'
+        text_color: root.color_texto
+        adaptive_size: True
+        pos_hint: {'center_y': .5}
+    EstrellasConf:
+        valor: root.valor
+        color: root.color
+        pos_hint: {'center_y': .5}
+    MDLabel:
+        text: root.numero
+        font_style: 'Body'
+        role: 'medium'
+        bold: True
+        theme_text_color: 'Custom'
+        text_color: root.color_texto
+        adaptive_size: True
+        pos_hint: {'center_y': .5}
+    Widget:
+    MDIcon:
+        icon: 'comment-text-outline'
+        theme_font_size: 'Custom'
+        font_size: sp(16)
+        theme_icon_color: 'Secondary'
+        size_hint: None, None
+        size: sp(18), sp(18)
+        pos_hint: {'center_y': .5}
+    MDLabel:
+        text: root.opiniones
+        font_style: 'Body'
+        role: 'small'
+        theme_text_color: 'Secondary'
+        adaptive_size: True
+        pos_hint: {'center_y': .5}
+
+# Cinco estrellas de solo lectura.
+<Estrellas@MDBoxLayout>:
+    valor: 0
+    adaptive_size: True
+    spacing: dp(1)
+    MDIcon:
+        icon: 'star' if root.valor >= 1 else 'star-outline'
+        font_size: sp(18)
+        theme_icon_color: 'Custom'
+        icon_color: 0.85, 0.6, 0.0, 1
+        size_hint: None, None
+        size: dp(18), dp(18)
+    MDIcon:
+        icon: 'star' if root.valor >= 2 else 'star-outline'
+        font_size: sp(18)
+        theme_icon_color: 'Custom'
+        icon_color: 0.85, 0.6, 0.0, 1
+        size_hint: None, None
+        size: dp(18), dp(18)
+    MDIcon:
+        icon: 'star' if root.valor >= 3 else 'star-outline'
+        font_size: sp(18)
+        theme_icon_color: 'Custom'
+        icon_color: 0.85, 0.6, 0.0, 1
+        size_hint: None, None
+        size: dp(18), dp(18)
+    MDIcon:
+        icon: 'star' if root.valor >= 4 else 'star-outline'
+        font_size: sp(18)
+        theme_icon_color: 'Custom'
+        icon_color: 0.85, 0.6, 0.0, 1
+        size_hint: None, None
+        size: dp(18), dp(18)
+    MDIcon:
+        icon: 'star' if root.valor >= 5 else 'star-outline'
+        font_size: sp(18)
+        theme_icon_color: 'Custom'
+        icon_color: 0.85, 0.6, 0.0, 1
+        size_hint: None, None
+        size: dp(18), dp(18)
+
+<OpinionCard>:
+    style: 'outlined'
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    padding: [dp(14), dp(10), dp(8), dp(4)]
+    spacing: dp(4)
+    radius: [dp(14)]
+    MDBoxLayout:
+        adaptive_height: True
+        spacing: dp(6)
+        MDIcon:
+            icon: root.nivel_icono
+            theme_icon_color: 'Custom'
+            icon_color: app.theme_cls.primaryColor
+            pos_hint: {'center_y': .5}
+        MDLabel:
+            text: root.autor + ('  (tú)' if root.propia else '')
+            bold: True
+            adaptive_height: True
+            pos_hint: {'center_y': .5}
+        MDLabel:
+            text: root.nivel
+            font_style: 'Label'
+            role: 'medium'
+            theme_text_color: 'Secondary'
+            halign: 'right'
+            adaptive_height: True
+            pos_hint: {'center_y': .5}
+    MDBoxLayout:
+        adaptive_height: True
+        spacing: dp(8)
+        Estrellas:
+            valor: root.estrellas
+            pos_hint: {'center_y': .5}
+        MDLabel:
+            text: root.cuando
+            font_style: 'Body'
+            role: 'small'
+            theme_text_color: 'Secondary'
+            adaptive_height: True
+            pos_hint: {'center_y': .5}
+    MDLabel:
+        text: root.texto
+        font_style: 'Body'
+        role: 'large'
+        adaptive_height: True
+    MDBoxLayout:
+        adaptive_height: True
+        spacing: dp(4)
+        MDLabel:
+            text: '¿Te sirvió?' if not root.propia else 'Los demás califican tu opinión'
+            font_style: 'Body'
+            role: 'small'
+            theme_text_color: 'Secondary'
+            adaptive_height: True
+            pos_hint: {'center_y': .5}
+        MDButton:
+            style: 'tonal' if root.mi_voto == 1 else 'text'
+            disabled: root.propia
+            pos_hint: {'center_y': .5}
+            on_release: app.sm.get_screen('detalle').votar(root.comentario_id, 1)
+            MDButtonIcon:
+                icon: 'thumb-up' if root.mi_voto == 1 else 'thumb-up-outline'
+            MDButtonText:
+                text: 'Útil %d' % root.utiles
+        MDButton:
+            style: 'tonal' if root.mi_voto == -1 else 'text'
+            disabled: root.propia
+            pos_hint: {'center_y': .5}
+            on_release: app.sm.get_screen('detalle').votar(root.comentario_id, -1)
+            MDButtonIcon:
+                icon: 'thumb-down' if root.mi_voto == -1 else 'thumb-down-outline'
+            MDButtonText:
+                text: '%d' % root.no_utiles

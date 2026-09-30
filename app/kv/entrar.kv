@@ -1,0 +1,100 @@
+<Clave@MDTextField>:
+    mode: 'outlined'
+    multiline: False
+    password: True
+    size_hint_y: None
+    height: dp(56)
+
+<PantallaEntrar>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDScrollView:
+        do_scroll_x: False
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            padding: [dp(24), dp(48), dp(24), dp(24)]
+            spacing: dp(18)
+
+            # Logo y bienvenida
+            MDIcon:
+                icon: 'fire'
+                font_size: sp(64)
+                theme_icon_color: 'Custom'
+                icon_color: app.theme_cls.primaryColor
+                pos_hint: {'center_x': .5}
+            MDLabel:
+                text: 'Ubica Pellet'
+                font_style: 'Headline'
+                role: 'large'
+                bold: True
+                halign: 'center'
+                adaptive_height: True
+            MDLabel:
+                text: 'Encuentra pellet en Temuco con ayuda de tus vecinos.'
+                font_style: 'Body'
+                role: 'large'
+                theme_text_color: 'Secondary'
+                halign: 'center'
+                adaptive_height: True
+
+            Widget:
+                size_hint_y: None
+                height: dp(4)
+
+            MDTextField:
+                id: usuario
+                mode: 'outlined'
+                multiline: False
+                size_hint_y: None
+                height: dp(56)
+                on_text_validate: clave.focus = True
+                MDTextFieldLeadingIcon:
+                    icon: 'account'
+                MDTextFieldHintText:
+                    text: 'Usuario'
+
+            Clave:
+                id: clave
+                on_text_validate: root.entrar()
+                MDTextFieldLeadingIcon:
+                    icon: 'lock'
+                MDTextFieldHintText:
+                    text: 'Contraseña'
+
+            MDButton:
+                style: 'text'
+                on_release: root.alternar_ver_clave()
+                MDButtonIcon:
+                    icon: 'eye-off' if not clave.password else 'eye'
+                MDButtonText:
+                    text: 'Ocultar contraseña' if not clave.password else 'Mostrar contraseña'
+
+            MDLabel:
+                id: error
+                text: ''
+                bold: True
+                theme_text_color: 'Custom'
+                text_color: app.C_NOHAY
+                adaptive_height: True
+
+            BotonAncho:
+                on_release: root.entrar()
+                MDButtonIcon:
+                    icon: 'login'
+                TextoBoton:
+                    text: 'Entrar'
+            BotonAncho:
+                style: 'outlined'
+                on_release: app.ir_a('registro')
+                MDButtonIcon:
+                    icon: 'account-plus'
+                TextoBoton:
+                    text: 'Crear una cuenta'
+
+            MDButton:
+                style: 'text'
+                pos_hint: {'center_x': .5}
+                on_release: root.solo_mirar()
+                MDButtonText:
+                    text: 'Seguir sin cuenta (solo mirar)'

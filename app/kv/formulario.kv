@@ -1,0 +1,225 @@
+<Campo@MDTextField>:
+    mode: 'outlined'
+    multiline: False
+    size_hint_y: None
+    height: dp(56)
+
+<PantallaFormulario>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'close'
+                    on_release: root.cancelar()
+            MDTopAppBarTitle:
+                text: 'Cuéntanos qué viste'
+
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: [dp(16), dp(8), dp(16), dp(16)]
+                # espacio extra para el texto de ayuda bajo cada campo
+                spacing: dp(22)
+
+                TextoSuave:
+                    text: ('Publicarás como ' + app.nombre_usuario + '. ' if app.con_sesion else 'Necesitas una cuenta para publicar. ') + 'Los campos con * son obligatorios.'
+
+                Campo:
+                    id: nombre
+                    MDTextFieldLeadingIcon:
+                        icon: 'store'
+                    MDTextFieldHintText:
+                        text: 'Local o persona que vende *'
+                    MDTextFieldHelperText:
+                        text: 'Ej.: Ferretería Los Aromos'
+                        mode: 'persistent'
+
+                Titulo:
+                    text: 'Tipo de punto'
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    MDButton:
+                        style: 'filled' if root.es_tienda else 'outlined'
+                        on_release: root.es_tienda = True
+                        MDButtonIcon:
+                            icon: 'storefront-outline'
+                        MDButtonText:
+                            text: 'Tienda o bencinera'
+                    MDButton:
+                        style: 'outlined' if root.es_tienda else 'filled'
+                        on_release: root.es_tienda = False
+                        MDButtonIcon:
+                            icon: 'account'
+                        MDButtonText:
+                            text: 'Particular'
+
+                Titulo:
+                    text: 'Sector'
+                MDButton:
+                    style: 'tonal'
+                    on_release: root.abrir_comunas(self)
+                    MDButtonIcon:
+                        icon: 'map-marker'
+                    MDButtonText:
+                        text: root.comuna
+
+                Campo:
+                    id: direccion
+                    MDTextFieldLeadingIcon:
+                        icon: 'map-marker-outline'
+                    MDTextFieldHintText:
+                        text: 'Dirección exacta *'
+                    MDTextFieldHelperText:
+                        text: 'Ej.: Manuel Montt 850'
+                        mode: 'persistent'
+
+                Titulo:
+                    text: 'Ubicación en el mapa *'
+                MDCard:
+                    id: caja_ubicacion
+                    style: 'outlined'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: [dp(14), dp(10), dp(10), dp(10)]
+                    spacing: dp(10)
+                    radius: [dp(12)]
+                    on_release: app.ir_a('elegir')
+                    MDIcon:
+                        icon: 'map-marker-check' if root.lat is not None else 'map-marker-plus-outline'
+                        theme_icon_color: 'Custom'
+                        icon_color: app.C_HAY if root.lat is not None else app.theme_cls.primaryColor
+                        pos_hint: {'center_y': .5}
+                    MDLabel:
+                        text: 'Ubicación marcada' if root.lat is not None else 'Toca para marcarla en el mapa'
+                        bold: root.lat is not None
+                        adaptive_height: True
+                        pos_hint: {'center_y': .5}
+                    MDIcon:
+                        icon: 'chevron-right'
+                        pos_hint: {'center_y': .5}
+
+                Titulo:
+                    text: '¿Había pellet cuando fuiste?'
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    MDButton:
+                        theme_width: 'Custom'
+                        size_hint_x: .5
+                        style: 'filled' if root.hay else 'outlined'
+                        theme_bg_color: 'Custom' if root.hay else 'Primary'
+                        md_bg_color: app.C_HAY if root.hay else (0, 0, 0, 0)
+                        on_release: root.hay = True
+                        MDButtonIcon:
+                            icon: 'check'
+                            theme_icon_color: 'Custom' if root.hay else 'Primary'
+                            icon_color: 1, 1, 1, 1
+                        MDButtonText:
+                            text: 'Sí había'
+                            theme_text_color: 'Custom' if root.hay else 'Primary'
+                            text_color: 1, 1, 1, 1
+                    MDButton:
+                        theme_width: 'Custom'
+                        size_hint_x: .5
+                        style: 'outlined' if root.hay else 'filled'
+                        theme_bg_color: 'Primary' if root.hay else 'Custom'
+                        md_bg_color: (0, 0, 0, 0) if root.hay else app.C_NOHAY
+                        on_release: root.hay = False
+                        MDButtonIcon:
+                            icon: 'close'
+                            theme_icon_color: 'Primary' if root.hay else 'Custom'
+                            icon_color: 1, 1, 1, 1
+                        MDButtonText:
+                            text: 'No había'
+                            theme_text_color: 'Primary' if root.hay else 'Custom'
+                            text_color: 1, 1, 1, 1
+
+                # Sacos y precio solo tienen sentido si había stock
+                MDBoxLayout:
+                    id: caja_stock
+                    orientation: 'vertical'
+                    spacing: dp(22)
+                    size_hint_y: None
+                    height: self.minimum_height if root.hay else 0
+                    opacity: 1 if root.hay else 0
+                    disabled: not root.hay
+                    Campo:
+                        id: sacos
+                        input_filter: 'int'
+                        MDTextFieldLeadingIcon:
+                            icon: 'package-variant'
+                        MDTextFieldHintText:
+                            text: 'Sacos que quedaban *'
+                        MDTextFieldHelperText:
+                            text: 'Aunque sea aproximado'
+                            mode: 'persistent'
+                    Campo:
+                        id: precio
+                        input_filter: 'int'
+                        MDTextFieldLeadingIcon:
+                            icon: 'currency-usd'
+                        MDTextFieldHintText:
+                            text: 'Precio por saco de 15 kg *'
+                        MDTextFieldHelperText:
+                            text: 'Solo números, ej.: 5290'
+                            mode: 'persistent'
+
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    Campo:
+                        id: hora
+                        MDTextFieldLeadingIcon:
+                            icon: 'clock-outline'
+                        MDTextFieldHintText:
+                            text: 'Hora en que pasaste'
+                        MDTextFieldHelperText:
+                            text: 'HH:MM (vacío = ahora)'
+                            mode: 'persistent'
+                    MDButton:
+                        style: 'tonal'
+                        pos_hint: {'top': 1}
+                        on_release: root.poner_hora_actual()
+                        MDButtonText:
+                            text: 'Ahora'
+
+                Titulo:
+                    text: 'Horario de atención'
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    Campo:
+                        id: desde
+                        text: '09:00'
+                        MDTextFieldHintText:
+                            text: 'Abre'
+                    Campo:
+                        id: hasta
+                        text: '20:00'
+                        MDTextFieldHintText:
+                            text: 'Cierra'
+
+                MDLabel:
+                    id: error
+                    text: ''
+                    font_style: 'Body'
+                    role: 'large'
+                    bold: True
+                    theme_text_color: 'Custom'
+                    text_color: app.C_NOHAY
+                    adaptive_height: True
+
+                BotonAncho:
+                    on_release: root.revisar()
+                    MDButtonIcon:
+                        icon: 'send'
+                    TextoBoton:
+                        text: 'Publicar'

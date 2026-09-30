@@ -1,0 +1,86 @@
+<PantallaRegistro>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'arrow-left'
+                    on_release: app.ir_a('entrar', 'right')
+            MDTopAppBarTitle:
+                text: 'Crear cuenta'
+
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: [dp(20), dp(8), dp(20), dp(24)]
+                # espacio extra para el texto de ayuda bajo cada campo
+                spacing: dp(24)
+
+                TextoSuave:
+                    text: 'Con tu cuenta puedes publicar puntos, reportar el stock, opinar y calificar opiniones. Tu reputación crece con cada aporte útil.'
+
+                Campo:
+                    id: nombre
+                    MDTextFieldLeadingIcon:
+                        icon: 'card-account-details-outline'
+                    MDTextFieldHintText:
+                        text: 'Tu nombre *'
+                    MDTextFieldHelperText:
+                        text: 'Así te verán los demás. Ej.: Camila R.'
+                        mode: 'persistent'
+
+                Campo:
+                    id: usuario
+                    MDTextFieldLeadingIcon:
+                        icon: 'account'
+                    MDTextFieldHintText:
+                        text: 'Nombre de usuario *'
+                    MDTextFieldHelperText:
+                        text: '3 a 20 letras o números, sin espacios'
+                        mode: 'persistent'
+
+                Clave:
+                    id: clave
+                    MDTextFieldLeadingIcon:
+                        icon: 'lock'
+                    MDTextFieldHintText:
+                        text: 'Contraseña *'
+                    MDTextFieldHelperText:
+                        text: 'Mínimo 6 caracteres'
+                        mode: 'persistent'
+
+                Clave:
+                    id: clave2
+                    on_text_validate: root.crear()
+                    MDTextFieldLeadingIcon:
+                        icon: 'lock-check'
+                    MDTextFieldHintText:
+                        text: 'Repite la contraseña *'
+
+                MDLabel:
+                    id: error
+                    text: ''
+                    bold: True
+                    theme_text_color: 'Custom'
+                    text_color: app.C_NOHAY
+                    adaptive_height: True
+
+                BotonAncho:
+                    on_release: root.crear()
+                    MDButtonIcon:
+                        icon: 'account-plus'
+                    TextoBoton:
+                        text: 'Crear mi cuenta'
+
+                MDButton:
+                    style: 'text'
+                    pos_hint: {'center_x': .5}
+                    on_release: app.ir_a('entrar', 'right')
+                    MDButtonText:
+                        text: 'Ya tengo cuenta'

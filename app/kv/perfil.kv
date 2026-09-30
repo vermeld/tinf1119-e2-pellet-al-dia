@@ -1,0 +1,257 @@
+<Dato@MDCard>:
+    valor: '0'
+    etiqueta: ''
+    style: 'filled'
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(76)
+    padding: dp(10)
+    radius: [dp(14)]
+    MDLabel:
+        text: root.valor
+        font_style: 'Headline'
+        role: 'small'
+        bold: True
+        halign: 'center'
+    MDLabel:
+        text: root.etiqueta
+        font_style: 'Body'
+        role: 'small'
+        theme_text_color: 'Secondary'
+        halign: 'center'
+
+<PantallaPerfil>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'account-circle'
+            MDTopAppBarTitle:
+                text: 'Mi perfil'
+
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: [dp(16), dp(8), dp(16), dp(24)]
+                spacing: dp(14)
+
+                # ---- con sesión
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height if app.con_sesion else 0
+                    opacity: 1 if app.con_sesion else 0
+                    disabled: not app.con_sesion
+                    spacing: dp(14)
+
+                    MDBoxLayout:
+                        adaptive_height: True
+                        spacing: dp(14)
+                        # Avatar: inicial en un círculo
+                        MDLabel:
+                            text: root.inicial
+                            font_style: 'Headline'
+                            role: 'medium'
+                            bold: True
+                            halign: 'center'
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+                            size_hint: None, None
+                            size: dp(64), dp(64)
+                            canvas.before:
+                                Color:
+                                    rgba: app.theme_cls.primaryColor
+                                Ellipse:
+                                    pos: self.pos
+                                    size: self.size
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            adaptive_height: True
+                            pos_hint: {'center_y': .5}
+                            MDLabel:
+                                text: app.nombre_usuario
+                                font_style: 'Title'
+                                role: 'large'
+                                bold: True
+                                adaptive_height: True
+                            TextoSuave:
+                                text: root.usuario
+                            MDBoxLayout:
+                                adaptive_height: True
+                                spacing: dp(6)
+                                MDIcon:
+                                    icon: root.nivel_icono
+                                    theme_icon_color: 'Custom'
+                                    icon_color: app.theme_cls.primaryColor
+                                MDLabel:
+                                    text: 'Nivel ' + root.nivel
+                                    bold: True
+                                    theme_text_color: 'Custom'
+                                    text_color: app.theme_cls.primaryColor
+                                    adaptive_height: True
+                                    pos_hint: {'center_y': .5}
+
+                    MDCard:
+                        style: 'outlined'
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: dp(16)
+                        spacing: dp(8)
+                        radius: [dp(14)]
+                        Titulo:
+                            text: 'Reputación: %d puntos' % root.puntos
+                        MDLinearProgressIndicator:
+                            size_hint_y: None
+                            height: dp(8)
+                            value: root.progreso
+                        TextoSuave:
+                            text: root.falta_txt
+
+                    MDGridLayout:
+                        cols: 2
+                        adaptive_height: True
+                        spacing: dp(8)
+                        Dato:
+                            valor: str(root.publicados)
+                            etiqueta: 'Puntos publicados'
+                        Dato:
+                            valor: str(root.reportes)
+                            etiqueta: 'Reportes de stock'
+                        Dato:
+                            valor: str(root.opiniones)
+                            etiqueta: 'Opiniones escritas'
+                        Dato:
+                            valor: str(root.utiles)
+                            etiqueta: 'Votos «útil» recibidos'
+
+                    MDCard:
+                        style: 'outlined'
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: dp(16)
+                        spacing: dp(12)
+                        radius: [dp(14)]
+                        Titulo:
+                            text: 'Cómo ganar reputación'
+                        FilaIcono:
+                            icono: 'thumb-up'
+                            texto: '+2 cuando alguien marca tu opinión como útil (−2 si no le sirvió)'
+                        FilaIcono:
+                            icono: 'map-marker-plus'
+                            texto: '+2 por cada punto nuevo que publicas'
+                        FilaIcono:
+                            icono: 'check-circle-outline'
+                            texto: '+1 por cada reporte de stock y por cada opinión'
+                        FilaIcono:
+                            icono: 'shield-star'
+                            texto: 'Nuevo 0 · Confiable 6 · Experto 15 puntos. Los reportes de usuarios Expertos pesan más.'
+
+                    MDCard:
+                        style: 'outlined'
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: [dp(16), dp(12), dp(8), dp(12)]
+                        spacing: dp(12)
+                        radius: [dp(14)]
+                        on_release: app.ir_a('ayuda')
+                        MDIcon:
+                            icon: 'help-circle-outline'
+                            theme_icon_color: 'Custom'
+                            icon_color: app.theme_cls.primaryColor
+                            pos_hint: {'center_y': .5}
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            adaptive_height: True
+                            pos_hint: {'center_y': .5}
+                            MDLabel:
+                                text: '¿Tienes dudas?'
+                                bold: True
+                                adaptive_height: True
+                            TextoSuave:
+                                text: 'Cómo usar la app, qué significan los colores y las estrellas'
+                        MDIcon:
+                            icon: 'chevron-right'
+                            pos_hint: {'center_y': .5}
+
+                    BotonAncho:
+                        style: 'outlined'
+                        on_release: app.salir()
+                        MDButtonIcon:
+                            icon: 'logout'
+                        TextoBoton:
+                            text: 'Cerrar sesión'
+
+                # ---- sin sesión
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height if not app.con_sesion else 0
+                    opacity: 0 if app.con_sesion else 1
+                    disabled: app.con_sesion
+                    spacing: dp(14)
+                    padding: [0, dp(24), 0, 0]
+                    MDIcon:
+                        icon: 'account-circle-outline'
+                        font_size: sp(72)
+                        theme_icon_color: 'Secondary'
+                        pos_hint: {'center_x': .5}
+                    MDLabel:
+                        text: 'No has entrado a tu cuenta'
+                        font_style: 'Title'
+                        role: 'large'
+                        bold: True
+                        halign: 'center'
+                        adaptive_height: True
+                    TextoSuave:
+                        text: 'Con una cuenta puedes publicar, reportar el stock, opinar y ganar reputación.'
+                        halign: 'center'
+                    BotonAncho:
+                        on_release: app.ir_a('entrar')
+                        MDButtonIcon:
+                            icon: 'login'
+                        TextoBoton:
+                            text: 'Entrar'
+                    BotonAncho:
+                        style: 'outlined'
+                        on_release: app.ir_a('registro')
+                        MDButtonIcon:
+                            icon: 'account-plus'
+                        TextoBoton:
+                            text: 'Crear una cuenta'
+
+                    MDCard:
+                        style: 'outlined'
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: [dp(16), dp(12), dp(8), dp(12)]
+                        spacing: dp(12)
+                        radius: [dp(14)]
+                        on_release: app.ir_a('ayuda')
+                        MDIcon:
+                            icon: 'help-circle-outline'
+                            theme_icon_color: 'Custom'
+                            icon_color: app.theme_cls.primaryColor
+                            pos_hint: {'center_y': .5}
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            adaptive_height: True
+                            pos_hint: {'center_y': .5}
+                            MDLabel:
+                                text: '¿Tienes dudas?'
+                                bold: True
+                                adaptive_height: True
+                            TextoSuave:
+                                text: 'Cómo usar la app, qué significan los colores y las estrellas'
+                        MDIcon:
+                            icon: 'chevron-right'
+                            pos_hint: {'center_y': .5}
+

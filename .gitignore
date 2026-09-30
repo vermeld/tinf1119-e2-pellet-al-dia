@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+puntos.json
+cache/
+puntos_temuco.json
+usuarios.json
+puntos_temuco_v2.json

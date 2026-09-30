@@ -1,0 +1,118 @@
+<PantallaAyuda>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'arrow-left'
+                    on_release: app.ir_a('perfil', 'right')
+            MDTopAppBarTitle:
+                text: '¿Cómo funciona?'
+
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: [dp(16), dp(8), dp(16), dp(16)]
+                spacing: dp(14)
+
+                Texto:
+                    text: 'Ubica Pellet funciona gracias a los vecinos de Temuco. Cada persona que ve pellet (o que se acabó) lo cuenta, y así nadie hace el viaje en vano.'
+
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(16)
+                    radius: [dp(14)]
+                    Titulo:
+                        text: 'Qué significa cada color'
+                    FilaIcono:
+                        icono: 'check-circle'
+                        texto: 'Verde: alguien vio pellet hace poco.'
+                    FilaIcono:
+                        icono: 'alert-circle'
+                        texto: 'Ámbar: el dato tiene más de 6 horas. Puede que ya no quede.'
+                    FilaIcono:
+                        icono: 'close-circle'
+                        texto: 'Rojo: avisaron que se acabó.'
+                    FilaIcono:
+                        icono: 'circle-slice-8'
+                        texto: 'Punto azul: tú. La línea azul es el camino a pie.'
+
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(16)
+                    radius: [dp(14)]
+                    Titulo:
+                        text: 'En 4 pasos'
+                    FilaIcono:
+                        icono: 'numeric-1-circle'
+                        texto: 'Revisa la Lista (lo más cercano sale primero) o el Mapa.'
+                    FilaIcono:
+                        icono: 'numeric-2-circle'
+                        texto: 'Toca un pin para ver el estado, el precio y a cuánto estás caminando.'
+                    FilaIcono:
+                        icono: 'numeric-3-circle'
+                        texto: 'Presiona «Cómo llegar». La app te marca el camino y avanza contigo mientras caminas.'
+                    FilaIcono:
+                        icono: 'numeric-4-circle'
+                        texto: 'Al llegar, cuéntale a los demás si había pellet. Si encontraste un punto nuevo, usa «Publicar un punto» en la Lista.'
+
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(16)
+                    radius: [dp(14)]
+                    Titulo:
+                        text: '¿Puedo confiar en el dato?'
+                    FilaIcono:
+                        icono: 'star-half-full'
+                        texto: 'Cada punto muestra su confiabilidad de 0 a 5 estrellas: amarillas si tiene 5, verdes de 2 a 4½ y rojas con 1½ o menos.'
+                    FilaIcono:
+                        icono: 'clock-fast'
+                        texto: 'Sube si el reporte es reciente y si varios vecinos dicen lo mismo.'
+                    FilaIcono:
+                        icono: 'shield-star'
+                        texto: 'Los reportes de usuarios con más reputación pesan más.'
+                    FilaIcono:
+                        icono: 'thumb-up-outline'
+                        texto: 'Marca las opiniones como útiles o no: así los demás ganan o pierden reputación.'
+
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(16)
+                    radius: [dp(14)]
+                    Titulo:
+                        text: 'En el computador (demo)'
+                    FilaIcono:
+                        icono: 'gesture-double-tap'
+                        texto: 'No hay GPS. Haz doble toque en el mapa para decir dónde estás.'
+                    FilaIcono:
+                        icono: 'play-circle-outline'
+                        texto: 'Durante una ruta, «Simular caminata» mueve tu punto por el camino.'
+
+                BotonAncho:
+                    on_release: app.ir_a('perfil', 'right')
+                    MDButtonIcon:
+                        icon: 'check'
+                    TextoBoton:
+                        text: 'Entendido'

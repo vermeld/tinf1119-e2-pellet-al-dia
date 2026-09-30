@@ -1,0 +1,223 @@
+# Pantalla Mapa. Las tarjetas flotantes se "esconden" moviéndolas fuera de la
+# pantalla (pos_hint), así no bloquean los toques sobre el mapa.
+
+<BotonMapa@MDIconButton>:
+    style: 'filled'
+    theme_bg_color: 'Custom'
+    md_bg_color: 1, 1, 1, 1
+    theme_icon_color: 'Custom'
+    icon_color: app.theme_cls.primaryColor
+
+<PantallaMapa>:
+    MapaPellet:
+        id: mapa
+        double_tap_zoom: False
+        on_doble_toque: root.doble_toque(*args[1:])
+
+    # ---- barra superior: título y filtros
+    MDCard:
+        style: 'elevated'
+        orientation: 'vertical'
+        size_hint: .94, None
+        height: self.minimum_height
+        padding: [dp(14), dp(10), dp(14), dp(10)]
+        spacing: dp(6)
+        radius: [dp(22)]
+        pos_hint: {'center_x': .5, 'top': 3 if root.navegando or root.buscando_ruta else .985}
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: dp(8)
+            MDIcon:
+                icon: 'fire'
+                theme_icon_color: 'Custom'
+                icon_color: app.theme_cls.primaryColor
+                pos_hint: {'center_y': .5}
+            MDLabel:
+                text: 'Ubica Pellet · Temuco'
+                font_style: 'Title'
+                role: 'medium'
+                bold: True
+                adaptive_height: True
+                pos_hint: {'center_y': .5}
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: dp(8)
+            MDButton:
+                style: 'outlined' if root.solo_con else 'filled'
+                on_release: root.solo_con = False
+                MDButtonText:
+                    text: 'Todos'
+            MDButton:
+                style: 'filled' if root.solo_con else 'outlined'
+                on_release: root.solo_con = True
+                MDButtonIcon:
+                    icon: 'check-circle'
+                MDButtonText:
+                    text: 'Solo con stock'
+        TextoSuave:
+            text: 'GPS activo' if app.hay_gps else 'Ubicación simulada · doble toque en el mapa para moverte'
+            font_style: 'Body'
+            role: 'small'
+
+    # ---- banner de navegación (azul, como en las apps de mapas)
+    MDCard:
+        style: 'filled'
+        size_hint: .94, None
+        height: self.minimum_height
+        padding: dp(14)
+        spacing: dp(12)
+        radius: [dp(18)]
+        theme_bg_color: 'Custom'
+        md_bg_color: app.C_RUTA
+        pos_hint: {'center_x': .5, 'top': .985 if root.navegando or root.buscando_ruta else 3}
+        MDIcon:
+            icon: 'car' if root.modo == 'auto' else 'walk'
+            font_size: sp(34)
+            theme_icon_color: 'Custom'
+            icon_color: 1, 1, 1, 1
+            pos_hint: {'center_y': .5}
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            pos_hint: {'center_y': .5}
+            MDLabel:
+                text: root.nav_restante
+                font_style: 'Title'
+                role: 'large'
+                bold: True
+                theme_text_color: 'Custom'
+                text_color: 1, 1, 1, 1
+                adaptive_height: True
+            MDLabel:
+                text: 'Hacia ' + root.sel_nombre
+                font_style: 'Body'
+                role: 'medium'
+                theme_text_color: 'Custom'
+                text_color: 1, 1, 1, .9
+                adaptive_height: True
+                shorten: True
+
+    # ---- botones del mapa (derecha)
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_size: True
+        spacing: dp(10)
+        pos_hint: {'right': .97, 'center_y': .5}
+        BotonMapa:
+            icon: 'plus'
+            on_release: root.acercar(1)
+        BotonMapa:
+            icon: 'minus'
+            on_release: root.acercar(-1)
+        BotonMapa:
+            icon: 'crosshairs-gps'
+            on_release: root.centrar_en_mi()
+
+    # ---- tarjeta del punto seleccionado
+    MDCard:
+        style: 'elevated'
+        orientation: 'vertical'
+        size_hint: .94, None
+        height: self.minimum_height
+        padding: [dp(16), dp(12), dp(12), dp(14)]
+        spacing: dp(6)
+        radius: [dp(22)]
+        pos_hint: {'center_x': .5, 'y': .02 if root.sel_id and not (root.navegando or root.buscando_ruta) else -3}
+        MDBoxLayout:
+            adaptive_height: True
+            MDLabel:
+                text: root.sel_nombre
+                font_style: 'Title'
+                role: 'medium'
+                bold: True
+                adaptive_height: True
+                pos_hint: {'center_y': .5}
+            MDIconButton:
+                icon: 'close'
+                pos_hint: {'center_y': .5}
+                on_release: root.cerrar_seleccion()
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: dp(6)
+            MDIcon:
+                icon: root.sel_icono
+                theme_icon_color: 'Custom'
+                icon_color: root.sel_color
+                pos_hint: {'center_y': .5}
+            MDLabel:
+                text: root.sel_estado
+                bold: True
+                theme_text_color: 'Custom'
+                text_color: root.sel_color
+                adaptive_height: True
+                pos_hint: {'center_y': .5}
+        FilaConfianza:
+            valor: root.sel_conf_valor
+            color: root.sel_conf_color
+            color_texto: root.sel_conf_color_texto
+            numero: root.sel_conf_numero
+            opiniones: root.sel_estrellas
+        TextoSuave:
+            text: root.sel_distancia
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: dp(8)
+            padding: [0, dp(6), 0, 0]
+            MDButton:
+                style: 'outlined'
+                on_release: app.ver_detalle(root.sel_id)
+                MDButtonIcon:
+                    icon: 'information-outline'
+                MDButtonText:
+                    text: 'Detalle'
+            MDButton:
+                style: 'filled'
+                theme_bg_color: 'Custom'
+                md_bg_color: app.C_RUTA
+                on_release: root.elegir_modo(root.sel_id)
+                MDButtonIcon:
+                    icon: 'directions'
+                    theme_icon_color: 'Custom'
+                    icon_color: 1, 1, 1, 1
+                MDButtonText:
+                    text: 'Cómo llegar'
+                    theme_text_color: 'Custom'
+                    text_color: 1, 1, 1, 1
+                    bold: True
+
+    # ---- tarjeta de navegación
+    MDCard:
+        style: 'elevated'
+        orientation: 'vertical'
+        size_hint: .94, None
+        height: self.minimum_height
+        padding: [dp(16), dp(12), dp(16), dp(14)]
+        spacing: dp(8)
+        radius: [dp(22)]
+        pos_hint: {'center_x': .5, 'y': .02 if root.navegando or root.buscando_ruta else -3}
+        TextoSuave:
+            text: ('Calculando la ruta en auto…' if root.modo == 'auto' else 'Calculando la ruta a pie…') if root.buscando_ruta else root.nav_nota
+        MDLinearProgressIndicator:
+            size_hint_y: None
+            height: dp(6)
+            value: root.nav_progreso
+            type: 'indeterminate' if root.buscando_ruta else 'determinate'
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: dp(8)
+            MDButton:
+                style: 'tonal'
+                disabled: app.hay_gps or not root.navegando
+                opacity: 0 if app.hay_gps else 1
+                on_release: root.alternar_simulacion()
+                MDButtonIcon:
+                    icon: 'pause' if root.simulando else 'play'
+                MDButtonText:
+                    text: 'Pausar' if root.simulando else ('Simular viaje' if root.modo == 'auto' else 'Simular caminata')
+            MDButton:
+                style: 'outlined'
+                on_release: root.terminar_navegacion()
+                MDButtonIcon:
+                    icon: 'close'
+                MDButtonText:
+                    text: 'Terminar'

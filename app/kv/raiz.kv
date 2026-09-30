@@ -1,0 +1,31 @@
+# Estructura general: pantallas arriba y barra de navegación inferior (como una app de celular).
+
+<ItemNav>:
+    MDNavigationItemIcon:
+        icon: root.icono
+    MDNavigationItemLabel:
+        text: root.texto
+
+<Raiz>:
+    orientation: 'vertical'
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDScreenManager:
+        id: sm
+
+    MDNavigationBar:
+        id: nav
+        on_switch_tabs: app.al_cambiar_pestana(args[1])
+        ItemNav:
+            pantalla: 'lista'
+            icono: 'format-list-bulleted'
+            texto: 'Lista'
+            active: True
+        ItemNav:
+            pantalla: 'mapa'
+            icono: 'map'
+            texto: 'Mapa'
+        ItemNav:
+            pantalla: 'perfil'
+            icono: 'account-circle-outline'
+            texto: 'Perfil'

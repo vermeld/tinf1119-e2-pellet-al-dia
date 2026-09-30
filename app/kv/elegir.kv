@@ -1,0 +1,55 @@
+<PantallaElegir>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'arrow-left'
+                    on_release: app.ir_a('form', 'right')
+            MDTopAppBarTitle:
+                text: 'Marca dónde está'
+
+        MDRelativeLayout:
+            MapaPellet:
+                id: mapa
+                double_tap_zoom: True
+
+            # Pin fijo al centro: se mueve el mapa, no el pin
+            Image:
+                source: root.pin
+                size_hint: None, None
+                size: dp(44), dp(60)
+                pos: self.parent.width / 2 - self.width / 2, self.parent.height / 2
+
+            MDCard:
+                style: 'elevated'
+                orientation: 'vertical'
+                size_hint: .94, None
+                height: self.minimum_height
+                padding: dp(14)
+                spacing: dp(10)
+                radius: [dp(22)]
+                pos_hint: {'center_x': .5, 'y': .03}
+                Texto:
+                    text: 'Mueve el mapa hasta que el pin quede sobre el lugar.'
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(8)
+                    MDButton:
+                        style: 'outlined'
+                        on_release: root.ir_a_mi_ubicacion()
+                        MDButtonIcon:
+                            icon: 'crosshairs-gps'
+                        MDButtonText:
+                            text: 'Estoy aquí'
+                    MDButton:
+                        style: 'filled'
+                        on_release: root.usar()
+                        MDButtonIcon:
+                            icon: 'check'
+                        MDButtonText:
+                            text: 'Usar este lugar'
