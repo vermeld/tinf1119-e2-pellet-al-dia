@@ -131,7 +131,7 @@ pellet/
 ├── FUNDAMENTACION-UX-UI.md     # fundamentación del diseño con evidencia de usuarios
 ├── assets/                     # íconos del mapa (pines, "tú")
 ├── tools/generar_iconos.py     # genera los PNG de assets/
-├── docs/                       # capturas, guion, diálogo para exponer y guía del código
+├── docs/capturas/              # capturas de pantalla
 └── app/
     ├── pelletapp.py            # MDApp: build(), ScreenManager, barra inferior, datos, acciones
     ├── cuentas.py              # registro, login (hash PBKDF2), reputación y niveles
@@ -168,9 +168,7 @@ llegaría como notificación, algo que queda fuera del alcance de la E2.
 
 Cada botón, pestaña, campo y pantalla tiene un comentario con una etiqueta que
 se puede buscar en VS Code con **Ctrl+Shift+F**, por ejemplo `BOTÓN «Cómo llegar»`
-o `PESTAÑA «Mapa»`. La tabla completa, con el archivo y la línea de cada
-elemento, está en [docs/GUIA-DEL-CODIGO.md](docs/GUIA-DEL-CODIGO.md). El diálogo
-para exponer está en [docs/DIALOGO-PRESENTACION.md](docs/DIALOGO-PRESENTACION.md).
+o `PESTAÑA «Mapa»`.
 
 ## Capturas
 
