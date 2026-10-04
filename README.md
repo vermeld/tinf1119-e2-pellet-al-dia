@@ -198,7 +198,7 @@ para exponer está en [docs/DIALOGO-PRESENTACION.md](docs/DIALOGO-PRESENTACION.m
 
 ## Declaración de uso de IA
 
-En el desarrollo se usó un asistente de IA (Claude, de Anthropic) para:
+En el desarrollo se usó un asistente de inteligencia artificial para:
 - Programar la app en Kivy + KivyMD (archivos `.py` y `.kv`): mapa, rutas, cuentas, opiniones, confiabilidad y PDA.
 - Depurar un error de KivyMD 2.0.0.
 - Redactar y ordenar la documentación, incluido este resumen de la investigación.
