@@ -1,19 +1,32 @@
-# Ubica Pellet (Temuco)
+# Pellet al Día
 
-Maqueta funcional para **TINF1119 Desarrollo Móvil (A+S)**, evaluación E2. Está hecha con **Kivy + KivyMD**.
+Dónde hay pellet o leña seca, y alertas del PDA, en Temuco y Padre Las Casas.
+Maqueta funcional para **TINF1119 Desarrollo Móvil (A+S)**, evaluación E2, hecha
+con **Kivy + KivyMD**. Proyecto individual de Gabriel Neculman.
 
 ## Problema que resuelve
 
-En invierno, en Temuco, hay quiebres de stock de pellet y la gente recorre
-ferreterías, bencineras y vendedores particulares sin saber dónde queda.
-**Ubica Pellet** es una app colaborativa con **lista y mapa**: los vecinos reportan dónde
-vieron pellet (o si se acabó), con precio, sacos y horario. La app te **guía
-caminando** hasta el punto y, al llegar, te pregunta si había, para mantener el
-dato al día.
+En invierno cuesta encontrar pellet y la información está dispersa. En la
+investigación, una persona necesitó «unos 7 viajes» en auto y otra no encontró
+pellet en el supermercado. Además, ninguna de las personas consultadas se entera
+a tiempo de las restricciones del Plan de Descontaminación Atmosférica (PDA).
+
+**Pellet al Día** es una app colaborativa con **lista y mapa**:
+- Los vecinos reportan dónde vieron **pellet o leña seca** (o si se acabó), con precio, sacos y horario.
+- Cada dato muestra su **confiabilidad en estrellas**.
+- La app te **lleva a pie o en auto** hasta el punto.
+- Arriba de la lista se ve el **episodio del PDA del día** y qué hacer.
 
 ## Usuario objetivo
 
-Hogares de Temuco y Padre Las Casas que calefaccionan con estufa a pellet. <!-- TODO: completar con el perfil del diagnóstico (edad, sector, familiaridad tecnológica) -->
+Familias de Temuco y Padre Las Casas que calefaccionan con pellet o leña,
+especialmente las que tienen niños, adultos mayores o personas con problemas
+respiratorios. Las personas consultadas tienen entre 18 y más de 60 años, y la
+de más edad es la que más esfuerzo invierte en conseguir combustible. El
+resumen de la investigación está en
+[FUNDAMENTACION-UX-UI.md](FUNDAMENTACION-UX-UI.md) y la evidencia en
+[docs/investigacion/](docs/investigacion/): la pauta de entrevista de 15
+preguntas y la plantilla de investigación completa.
 
 ## Ejecutar
 
@@ -72,6 +85,7 @@ más 6 pantallas secundarias. Todas están en un `MDScreenManager`.
 | 6 | Publicar | `screens/formulario.py` | `kv/formulario.kv` | Formulario con validación (se abre desde la Lista) |
 | 7 | Elegir ubicación | `screens/elegir.py` | `kv/elegir.kv` | Se mueve el mapa bajo un pin fijo para marcar el punto nuevo |
 | 8 | Ayuda | `screens/ayuda.py` | `kv/ayuda.kv` | Colores, estrellas, cómo usar la app (se abre desde el Perfil) |
+| 9 | Calidad del aire hoy | `screens/pda.py` | `kv/pda.kv` | Episodio del PDA (Alerta, Preemergencia, Emergencia), qué hacer y enlace al pronóstico oficial. Se abre desde el aviso de la Lista |
 
 ```
 [Entrar] ─ Crear cuenta / Solo mirar ─▶ Lista
@@ -137,8 +151,19 @@ pellet/
 ```
 
 La **interfaz** está en los `.kv` y la **lógica** (filtros, validación, rutas,
-eventos) en los `.py`. Los datos se guardan en `puntos_temuco.json`, dentro de
+eventos) en los `.py`. Los datos se guardan en `puntos_temuco_v2.json`, dentro de
 `App.user_data_dir` (esto no se evalúa en la E2).
+
+## Calidad del aire (PDA)
+
+Arriba de la Lista aparece un aviso con el episodio del día (por ejemplo, **«Hoy:
+Alerta ambiental»**). Al tocarlo se abre una pantalla con qué hacer, los niveles
+del PDA, la aclaración de que rige en todo Temuco y Padre Las Casas, y un botón
+al pronóstico oficial (airechile.mma.gob.cl).
+
+En la maqueta el episodio es un **dato de ejemplo**, y el botón «Simular otro
+día (demo)» lo cambia. En la versión final se obtendría del pronóstico oficial y
+llegaría como notificación, algo que queda fuera del alcance de la E2.
 
 ## Capturas
 
@@ -149,6 +174,10 @@ eventos) en los `.py`. Los datos se guardan en `puntos_temuco.json`, dentro de
 | Lista | Detalle | Publicar | Marcar ubicación | Ayuda |
 |---|---|---|---|---|
 | ![](docs/capturas/4_lista.png) | ![](docs/capturas/5_detalle.png) | ![](docs/capturas/6_formulario.png) | ![](docs/capturas/7_elegir_ubicacion.png) | ![](docs/capturas/8_ayuda.png) |
+
+| Calidad del aire (PDA) | Preemergencia | Qué vende |
+|---|---|---|
+| ![](docs/capturas/17_pda.png) | ![](docs/capturas/18_pda_preemergencia.png) | ![](docs/capturas/19_que_vende.png) |
 
 | Entrar | Crear cuenta | Opiniones | Perfil | Cómo se calcula | Confiabilidad baja |
 |---|---|---|---|---|---|
@@ -161,9 +190,10 @@ eventos) en los `.py`. Los datos se guardan en `puntos_temuco.json`, dentro de
 
 ## Declaración de uso de IA
 
-Durante el desarrollo se usó un asistente de IA (Claude, de Anthropic) para
-migrar la interfaz a KivyMD, implementar el mapa, la navegación a pie, las cuentas,
-las opiniones y el cálculo de confiabilidad, depurar
-un error de KivyMD 2.0.0 y redactar la documentación. <!-- TODO: ajustar según lo que realmente hiciste tú -->
-El diagnóstico con usuarios (entrevistas y encuestas) y las decisiones de diseño
-derivadas son trabajo del/los estudiante(s).
+En el desarrollo se usó un asistente de IA (Claude, de Anthropic) para:
+- Programar la app en Kivy + KivyMD (archivos `.py` y `.kv`): mapa, rutas, cuentas, opiniones, confiabilidad y PDA.
+- Depurar un error de KivyMD 2.0.0.
+- Redactar y ordenar la documentación, incluido este resumen de la investigación.
+
+Las ideas de la app, las decisiones de qué incluir y la investigación con
+usuarios (pauta de entrevista, formulario y respuestas) son del estudiante.

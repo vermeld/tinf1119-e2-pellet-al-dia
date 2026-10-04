@@ -49,7 +49,7 @@ def _p(id_, nombre, tipo, sector, direccion, lat, lon, hay, sacos, precio,
 
 
 def datos_iniciales():
-    return [
+    puntos = [
         _p(1, "Ferretería Los Aromos", "tienda", "Centro", "Manuel Montt 850",
            -38.73860, -72.59700, True, 40, 5490, "09:00", "20:00",
            [(1, True, 25), (7, True, 70), (8, True, 150), (2, True, 300)],
@@ -96,3 +96,8 @@ def datos_iniciales():
            [(10, True, 55), (3, True, 140), (1, True, 220)],
            [(10, 4, "Vende pellet y leña seca. Acepta transferencia.", 60, {1: 1, 3: 1})]),
     ]
+    # qué vende cada punto; el resto vende pellet
+    combustible = {5: "lena", 7: "ambos", 8: "lena", 10: "ambos"}
+    for p in puntos:
+        p["combustible"] = combustible.get(p["id"], "pellet")
+    return puntos

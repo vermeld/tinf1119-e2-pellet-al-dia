@@ -1,0 +1,161 @@
+# Aviso del PDA en la Lista (se toca para ver el detalle).
+<AvisoPDA@MDCard>:
+    style: 'filled'
+    size_hint_y: None
+    height: self.minimum_height
+    padding: [dp(14), dp(10), dp(8), dp(10)]
+    spacing: dp(10)
+    radius: [dp(14)]
+    theme_bg_color: 'Custom'
+    md_bg_color: app.color_episodio
+    on_release: app.ir_a('pda')
+    MDIcon:
+        icon: app.icono_episodio
+        theme_icon_color: 'Custom'
+        icon_color: 1, 1, 1, 1
+        pos_hint: {'center_y': .5}
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'center_y': .5}
+        MDLabel:
+            text: 'Hoy: ' + app.titulo_episodio
+            bold: True
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, 1
+            adaptive_height: True
+        MDLabel:
+            text: app.corto_episodio + ' · Toca para saber qué hacer'
+            font_style: 'Body'
+            role: 'small'
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, .92
+            adaptive_height: True
+    MDIcon:
+        icon: 'chevron-right'
+        theme_icon_color: 'Custom'
+        icon_color: 1, 1, 1, 1
+        pos_hint: {'center_y': .5}
+
+<PantallaPDA>:
+    md_bg_color: app.theme_cls.surfaceColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: 'small'
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: 'arrow-left'
+                    on_release: app.ir_a('lista', 'right')
+            MDTopAppBarTitle:
+                text: 'Calidad del aire hoy'
+
+        MDScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: [dp(16), dp(8), dp(16), dp(24)]
+                spacing: dp(14)
+
+                # Episodio de hoy, grande
+                MDCard:
+                    style: 'filled'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(14)
+                    radius: [dp(16)]
+                    theme_bg_color: 'Custom'
+                    md_bg_color: root.color
+                    MDIcon:
+                        icon: root.icono
+                        font_size: sp(44)
+                        theme_icon_color: 'Custom'
+                        icon_color: 1, 1, 1, 1
+                        pos_hint: {'center_y': .5}
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        pos_hint: {'center_y': .5}
+                        MDLabel:
+                            text: root.titulo
+                            font_style: 'Title'
+                            role: 'large'
+                            bold: True
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+                            adaptive_height: True
+                        MDLabel:
+                            text: root.corto
+                            font_style: 'Body'
+                            role: 'large'
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, 1
+                            adaptive_height: True
+                        MDLabel:
+                            text: 'Temuco y Padre Las Casas'
+                            font_style: 'Body'
+                            role: 'small'
+                            theme_text_color: 'Custom'
+                            text_color: 1, 1, 1, .9
+                            adaptive_height: True
+
+                Titulo:
+                    text: '¿Qué hago hoy?'
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(14)
+                    radius: [dp(14)]
+                    MDBoxLayout:
+                        id: que_hacer
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        spacing: dp(14)
+
+                MDCard:
+                    style: 'outlined'
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(16)
+                    spacing: dp(12)
+                    radius: [dp(14)]
+                    Titulo:
+                        text: 'Los niveles del PDA'
+                    FilaIcono:
+                        icono: 'alert'
+                        texto: 'Alerta: no debe salir humo visible de las chimeneas.'
+                    FilaIcono:
+                        icono: 'alert-octagon'
+                        texto: 'Preemergencia: se prohíbe usar calefactores a leña en el horario que fija la autoridad.'
+                    FilaIcono:
+                        icono: 'alert-octagram'
+                        texto: 'Emergencia: la restricción más estricta.'
+                    FilaIcono:
+                        icono: 'map-marker-radius'
+                        texto: 'Rige en todo Temuco y Padre Las Casas, no solo en algunos sectores.'
+
+                TextoSuave:
+                    text: 'Maqueta: el episodio de hoy es un dato de ejemplo. En la versión final se obtiene del pronóstico oficial y llega como aviso al celular. Las reglas exactas y horarios los informa la autoridad.'
+
+                BotonAncho:
+                    on_release: root.abrir_oficial()
+                    MDButtonIcon:
+                        icon: 'open-in-new'
+                    TextoBoton:
+                        text: 'Ver pronóstico oficial'
+                MDButton:
+                    style: 'text'
+                    pos_hint: {'center_x': .5}
+                    on_release: root.simular_otro_dia()
+                    MDButtonIcon:
+                        icon: 'calendar-arrow-right'
+                    MDButtonText:
+                        text: 'Simular otro día (demo)'

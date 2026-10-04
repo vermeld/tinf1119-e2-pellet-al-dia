@@ -61,7 +61,7 @@ class PantallaDetalle(MDScreen):
         if d["dudoso"]:
             i.precio.text = "Último dato: %s" % d["estado"].lower()
         elif p["hay"] and p["precio"]:
-            i.precio.text = "%s el saco de 15 kg" % plata(p["precio"])
+            i.precio.text = "%s el %s" % (plata(p["precio"]), d["unidad"].replace("saco 15 kg", "saco de 15 kg"))
         elif p["hay"]:
             i.precio.text = "Precio no informado"
         else:

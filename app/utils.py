@@ -4,7 +4,7 @@
 import re
 from datetime import datetime, timedelta
 
-from .config import HORAS_PARA_DUDAR
+from .config import COMBUSTIBLES, HORAS_PARA_DUDAR
 
 
 def plata(valor):
@@ -51,10 +51,13 @@ def describir(p):
     'color' es el nombre del color de la app (C_HAY, C_NOHAY, C_DUDA).
     """
     dudoso = p["hay"] and es_viejo(p["visto"])
+    combustible = p.get("combustible", "pellet")
+    que = {"pellet": "pellet", "lena": "leña seca", "ambos": "pellet y leña"}[combustible]
+    unidad = "saco de leña" if combustible == "lena" else "saco 15 kg"
 
     if p["hay"]:
-        estado = "Hay pellet · quedaban %d sacos" % p["sacos"]
-        precio = "%s\n[size=12sp]saco 15 kg[/size]" % plata(p["precio"]) if p["precio"] else ""
+        estado = "Hay %s · quedaban %d sacos" % (que, p["sacos"])
+        precio = "%s\n[size=12sp]%s[/size]" % (plata(p["precio"]), unidad) if p["precio"] else ""
         color, icono = "C_HAY", "check-circle"
     else:
         estado = "Sin stock"
@@ -79,6 +82,8 @@ def describir(p):
         "visto": visto,
         "dudoso": dudoso,
         "tipo": tipo,
-        "subtitulo": "%s · %s" % (tipo, p["comuna"]),
+        "subtitulo": "%s · %s · %s" % (que[0].upper() + que[1:], tipo, p["comuna"]),
+        "combustible": combustible,
+        "unidad": unidad,
         "horario": "Atiende de %s a %s" % (p["desde"], p["hasta"]),
     }

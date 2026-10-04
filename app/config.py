@@ -9,6 +9,16 @@ SECTORES = [
 
 HORAS_PARA_DUDAR = 6  # después de esto, un "hay pellet" deja de ser confiable
 
+# Qué vende cada punto (la investigación habla de pellet y de leña seca)
+COMBUSTIBLES = {
+    "pellet": "Pellet",
+    "lena": "Leña seca",
+    "ambos": "Pellet y leña seca",
+}
+
+# Episodio PDA de ejemplo al abrir la app (maqueta; ver pda.py)
+EPISODIO_DEMO = "alerta"
+
 # ---- mapa
 CENTRO_TEMUCO = (-38.7390, -72.5985)
 ZOOM_INICIAL = 14
@@ -22,7 +32,7 @@ TILES_EXT = "jpg"
 TILES_CACHE = "esri_calles"
 TILES_ATRIBUCION = "Esri · © OpenStreetMap"
 # Los servicios de mapas piden identificar la app que hace las consultas.
-USER_AGENT = "UbicaPellet/1.0 (proyecto academico UC Temuco)"
+USER_AGENT = "PelletAlDia/1.0 (proyecto academico UC Temuco)"
 
 # Servidores OSRM (OpenStreetMap): a pie usa veredas y pasajes; en auto respeta
 # el sentido de las calles.

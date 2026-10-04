@@ -1,85 +1,98 @@
-# Fundamentación UX/UI de Ubica Pellet
+# Fundamentación UX/UI de Pellet al Día
 
-> ⚠️ **PLANTILLA POR COMPLETAR.** Lo que aparece entre `[corchetes]` debe
-> reemplazarse con los datos **reales** de tus entrevistas y encuestas. Las
-> decisiones de diseño ya están implementadas en la app; falta respaldarlas con
-> evidencia (criterios A1 y A2 de la pauta: 15 pts). Si algún hallazgo no
-> coincide con lo que dijeron tus usuarios, borra esa fila o cámbiala.
+Proyecto individual de Gabriel Neculman para TINF1119 Desarrollo Móvil (A+S), evaluación E2.
+El detalle completo de la investigación está en la *Plantilla de Investigación de
+Necesidades y Problemas Reales* y la pauta de entrevista, ambas en
+[docs/investigacion/](docs/investigacion/). Este documento resume esa
+evidencia y muestra cómo se tradujo en la interfaz.
 
 ## a) Metodología de investigación
 
-| Instrumento | Cantidad | A quiénes | Cómo y cuándo |
-|---|---|---|---|
-| Entrevista semiestructurada | [N] | [ej.: usuarios de estufa a pellet de Temuco / socio comunitario X] | [presencial/online, fecha, duración aprox.] |
-| Encuesta | [N respuestas] | [perfil] | [Google Forms, difundida por …, fecha] |
+| Instrumento | Aplicación | Participantes |
+|---|---|---|
+| **Pauta de entrevista** de **15 preguntas abiertas** en 4 bloques: contexto del hogar, abastecimiento de combustible, restricciones del PDA y cierre | Se registró mediante un **formulario de Google** el **04/10/2026**. Las preguntas buscan descubrir el problema sin mencionar ninguna aplicación | **3 personas** que calefaccionan con leña o pellet |
 
-Socio comunitario: [nombre y breve descripción].
-Preguntas clave del instrumento: [3 o 4 preguntas principales].
+| Persona | Comuna | Edad | Calefacción | Quién compra el combustible |
+|---|---|---|---|---|
+| P1 | Padre Las Casas (departamento) | 45 a 59 | Estufa a pellet | Él mismo |
+| P2 | Temuco | 60 o más | Pellet (antes, leña) | Su esposo o su hijo, en auto |
+| P3 | Temuco (cerca de un río) | 18 a 29 | Leña | Su padre, a un conocido |
+
+**Limitación:** la muestra es pequeña (3 personas). Los resultados muestran una
+tendencia que conviene confirmar con más entrevistas, incluidos vendedores de
+pellet y leña, que no alcanzaron a ser entrevistados.
 
 ## b) Resultados principales
 
+Las citas son textuales, tal como cada persona escribió su respuesta en el formulario.
+
 | # | Hallazgo | Evidencia |
 |---|---|---|
-| H1 | Se pierde tiempo y dinero recorriendo locales sin stock | [cita: "…" — Entrevistado/a 2] · [X % dice haber ido a un local sin pellet] |
-| H2 | Lo que más importa es **dónde hay ahora**, más que el precio | [% que prioriza disponibilidad sobre precio] |
-| H3 | La información que circula (WhatsApp/Facebook) queda vieja rápido | [cita] |
-| H4 | También venden particulares, no solo tiendas | [recuento / cita] |
-| H5 | El precio por saco varía mucho entre puntos | [rango de precios reportados] |
-| H6 | Parte de los usuarios tiene poca familiaridad con apps / son mayores | [% mayores de 50, o cita] |
-| H7 | Desconfían de datos de desconocidos | [cita] |
-| H8 | Buscan pellet **cerca de su casa** y muchos se mueven a pie o en micro | [% que va a pie / cita] |
-| H9 | Cuesta ubicar direcciones de vendedores particulares (pasajes, casas) | [cita] |
-| H10 | Quieren saber **quién** dio el dato y si esa persona es confiable | [cita / %] |
-| H11 | Valoran las **opiniones** de otros compradores (atención, calidad, precio) | [% que lee reseñas antes de comprar] |
+| **H1** | **Cuesta encontrar pellet en pleno invierno** (2 de 3; las 2 que usan pellet) | P1: «En el supermercado no habin asique me tuve que conseguir 3 bolsas». P2: «No había Pelet en ningún lado». Los meses más difíciles: abril (P1) y agosto (P2) |
+| **H2** | **Buscar cuesta tiempo y viajes**, en auto en el caso de P2 | P2: «Unos 7 viajes», «Tenemos que ir de manera presencial en auto». P1: «1 horas aprox si voy al super a comprar» |
+| **H3** | **La información está dispersa**: cada uno busca por su lado | P1: «En paginas de sectores, supermercados y eso». P2 busca en redes sociales y compra «generalmente en una frutería». P3: «Vemos los precios con los que ofrecen leña en los pasajes» |
+| **H4** | **Quieren saber dónde hay, de forma simple y confiable** | P2: «Saber dónde hay de manera sencilla y si realmente queda en ese lugar». P1: «Precios mas accesibles y principalmente mas zonas de ventas» |
+| **H5** | **Lo que más frustra es no encontrar pellet** (2 de 2 usuarios de pellet) | P1: «Pillar pelet cuando vamos a mitad de invierno». P2: «No encontrar Pelet» |
+| **H6** | **Nadie conoce bien el PDA ni se entera a tiempo** (3 de 3) | Sobre las restricciones: P1 «Nada», P2 «No mucho», P3 «Se que uno puede hacer fuego hasta cierta hora nomás». ¿Le llega a tiempo? P1 «No mucha la verdad», P2 «No». P3 cree que «Donde yo vivo no tengo restricciones» |
+| **H7** | **El precio sube cuando escasea** (2 de 3) | P2: «cada vez que hay poco sube mucho». P1: «antes era mucho mas accesibles los precios» |
+| **H8** | **Han recibido leña húmeda o de mala calidad** (2 de 3) | P1: «algunas leñas estaban pesimas». P2: «Si, hemos recibido quejas» |
+| **H9** | **Hay personas vulnerables al frío y al humo en el hogar** (3 de 3) | P1: «mi hija que lamentablemente se la psa resfriada». P2 es ella misma la más afectada. P3: el humo de los vecinos le duele en los ojos «al punto de casi no poder ver bien» |
+| **H10** | **Los perfiles son distintos**: la persona de 60 años o más es la que más se esfuerza, y quien usa leña planifica | P2 hizo unos 7 viajes. P3 compra leña seca en verano: «Somos precavidos con el tema de la leña» |
 
 ## c) Matriz hallazgo → decisión de diseño
 
-| Hallazgo | Decisión en la interfaz | Dónde está en la app | Por qué |
-|---|---|---|---|
-| H1, H2, H8 | La pantalla de inicio es la **Lista**, ordenada por cercanía; el **mapa de Temuco** con pines de colores es la segunda pestaña | `lista.kv`, `mapa.kv` | Primero se responde «dónde hay» en un formato fácil de leer; el mapa sirve para ubicar y llegar |
-| H8, H9 | Botón **«Cómo llegar»**, que pregunta **«¿Caminando o en auto?»**: ruta por veredas o respetando el sentido de las calles, con metros y minutos que faltan | `mapa.py → elegir_modo()`, `rutas.py` | Resuelve el «¿cómo llego?», sobre todo a casas en pasajes. Los sacos de 15 kg pesan, y muchos van en auto a comprar varios [dato de tu encuesta] |
-| H6 | **Mapa limpio**: solo calles y sus nombres, sin números de casas ni íconos de comercios | `config.TILES_URL` | Menos ruido visual, y la ruta y los pines se distinguen mejor |
-| H8 | **Tu punto avanza mientras caminas** y la parte recorrida se pinta en gris | `ubicacion.py`, `RutaLayer` | Es el mismo modelo mental de Google Maps, que el usuario ya conoce |
-| H3, H7 | Al llegar, la app pregunta **«¿Había pellet?»** | `mapa.py → _llegar()` | Consigue confirmaciones justo cuando el dato es más confiable |
-| H8 | La lista se ordena **por cercanía** y cada punto muestra «a 850 m» | `lista.py` | Lo cercano es lo que realmente sirve |
-| H2 | Cada tarjeta muestra el **estado de stock en negrita, con ícono y color** justo debajo del nombre | `PuntoCard` en `widgets.kv` | Jerarquía visual: el estado se lee antes que la dirección |
-| H3 | Cada dato dice **«Visto hace X min»**. Pasadas 6 horas se pone ámbar y dice «Puede que ya no quede» | `utils.describir()`, `config.HORAS_PARA_DUDAR` | El usuario sabe cuánto confiar en el dato |
-| H3, H7 | Botones **«Sigue habiendo» / «Ya no hay»** en el detalle, más el contador de confirmaciones | `detalle.kv`, `app.confirmar()` | Otros vecinos validan el dato, lo que genera confianza |
-| H4 | En el formulario se elige el tipo: **Tienda o bencinera / Particular** | `formulario.kv` | Refleja los dos tipos de vendedor que existen |
-| H5 | Se muestra el **precio por saco de 15 kg** arriba a la derecha de la tarjeta | `PuntoCard` | Permite comparar de un vistazo |
-| H1 | **Filtro por sector** de Temuco (Centro, Amanecer, Labranza…) con `MDDropdownMenu` | `lista.kv` | La gente piensa en su barrio, no en coordenadas |
-| H7, H10 | **Cuentas de usuario**: publicar, reportar y opinar requieren entrar; se muestra quién hizo cada reporte | `entrar.kv`, `registro.kv`, `app.requiere_cuenta()` | Un dato con nombre es más confiable que uno anónimo |
-| H7, H10 | **Confiabilidad en estrellas (0 a 5, con medias)**: amarillas con 5, verdes de 2 a 4½ y rojas con 1½ o menos. Aparece en el mapa, la lista y el detalle, con «¿Cómo se calcula?» | `confianza.py`, `EstrellasConf`, `detalle.kv` | Las estrellas se entienden sin saber de porcentajes, y el color resume el nivel de un vistazo |
-| H10 | **Reputación y niveles** (Nuevo, Confiable, Experto): los reportes de usuarios con más reputación pesan más | `cuentas.py`, `perfil.kv` | Premia a quien aporta bien y reduce el peso de los datos falsos |
-| H11 | **Opiniones con estrellas** y votos **Útil / No útil**. Las más útiles se muestran primero | `OpinionCard`, `detalle.py` | Es el mismo modelo de las tiendas de apps y de Google Maps, que el usuario ya conoce |
-| H6 | Opción **«Seguir sin cuenta (solo mirar)»** | `entrar.kv` | Quien solo quiere consultar no se topa con una barrera |
-| H9 | Para publicar se **marca el lugar moviendo el mapa bajo un pin fijo** | `elegir.kv` | Es más fácil que escribir coordenadas y más preciso que solo la dirección |
-| H6 | Hay una pantalla de **Ayuda** con los colores explicados y 4 pasos | `ayuda.kv` | Sirve para quien usa la app por primera vez |
-| H6 | **Diálogo de confirmación** antes de publicar o cambiar un dato, y **Snackbar** de éxito | `formulario.py`, `detalle.py` | Evita errores y da feedback claro |
-| H6 | Validación con **mensajes en lenguaje simple** («Falta la dirección…»), y el campo con error se marca en rojo | `formulario.py → validar()` | Se entiende qué corregir sin jerga técnica |
+La columna **Respaldo** distingue qué nace de la evidencia y qué no:
+- **Directo:** lo dijeron las personas.
+- **Derivado:** se infiere de lo que dijeron.
+- **Supuesto:** todavía no está validado (ver la sección f).
+
+| Hallazgo | Decisión en la interfaz | Dónde está | Respaldo | Por qué |
+|---|---|---|---|---|
+| H1, H5 | La pantalla de inicio es la **Lista**, filtrada en **«Con stock»** y ordenada **por cercanía** | `lista.kv`, `lista.py` | Directo | Responde lo que más frustra («No encontrar Pelet») sin tocar nada |
+| H4 | Cada punto muestra **«Visto hace X min»** y tiene botones **«Sigue habiendo» / «Ya no hay»** | `detalle.kv`, `app.confirmar()` | Directo | Responde a «si realmente queda en ese lugar». Un dato sin hora repetiría el problema de las redes sociales |
+| H6 | **Aviso «Hoy: Alerta / Preemergencia / Emergencia»** arriba de la Lista; al tocarlo se abre **«Calidad del aire hoy»** con qué hacer y un enlace al pronóstico oficial | `pda.kv`, `pda.py` | Directo | A ninguna de las 3 personas le llega la información a tiempo. En la primera pantalla la ven sin buscarla |
+| H6 | El aviso dice **«Rige en todo Temuco y Padre Las Casas»** | `pda.kv` | Directo | Corrige la confusión de P3 («Donde yo vivo no tengo restricciones») |
+| H7 | El **precio por saco** se ve arriba a la derecha de cada tarjeta | `PuntoCard` | Directo | P1 pide «Precios mas accesibles»; con los precios a la vista se pueden comparar cuando suben |
+| H2 | **«Cómo llegar» pregunta «¿Caminando o en auto?»** y muestra la ruta y los minutos que faltan | `mapa.py → elegir_modo()`, `rutas.py` | Derivado | P2 hizo «Unos 7 viajes» en auto: con un destino confirmado se va directo, sin recorrer locales |
+| H4 | **Confiabilidad en estrellas (0 a 5)**: amarillas con 5, verdes de 2 a 4½ y rojas con 1½ o menos. Se calcula con la frescura del dato, cuántos lo confirman y la reputación de quien reporta | `confianza.py`, `EstrellasConf` | Derivado | Responde a «si realmente queda» de un vistazo |
+| H4 | **Cuentas, opiniones y votos «Útil / No útil»** con niveles de reputación | `cuentas.py`, `perfil.kv`, `OpinionCard` | Derivado | Para confiar en un dato hay que saber quién lo dio. Nadie lo pidió textualmente |
+| H3, H4 | **Cualquier vecino puede publicar un punto**, incluidos particulares; la ubicación se marca en el mapa | `formulario.kv`, `elegir.kv` | Derivado + Supuesto | Reúne lo que hoy está en páginas, redes, fruterías y pasajes, y suma «mas zonas de ventas» (P1). **Supuesto:** que la gente esté dispuesta a reportar |
+| H9 | Consejos de cuidado para **niños, adultos mayores y personas con problemas respiratorios** en días de episodio | `pda.py` | Derivado | Las 3 personas tienen a alguien afectado por el frío o el humo. Aborda en parte el problema del humo de P3 |
+| H10 | **Botones grandes, lenguaje cotidiano, color siempre con texto, solo 3 pestañas y Ayuda** | `widgets.kv`, `ayuda.kv` | Derivado | La persona de 60 o más es la que más se esfuerza y la que más necesita simplicidad |
+| (H8) | Cada punto indica **qué vende: Pellet, Leña seca o Ambos** | `formulario.kv`, `utils.describir()` | Supuesto | **Respaldo débil:** la única persona que usa leña no tiene problemas para conseguirla. Se incluye porque el problema definido en la plantilla habla de «leña seca o pellet», y porque 2 personas mencionaron leña de mala calidad. **El foco de la app es el pellet** |
 
 ## d) Justificación de la estructura y navegación
 
-La barra inferior tiene solo **3 pestañas, en este orden: Lista · Mapa · Perfil**.
+La barra inferior tiene solo **3 pestañas: Lista · Mapa · Perfil**.
 
-1. **Lista** (inicio y primera pestaña): responde «¿dónde hay pellet cerca de mí?» sin tocar nada. Está ordenada por cercanía, muestra el estado, el precio y la confiabilidad en estrellas, y se lee de arriba abajo, sin tener que manejar un mapa. Esto sirve más a quien tiene poca familiaridad con la tecnología (H6). El botón **Publicar un punto** está fijo bajo la lista, porque publicar es la acción que sigue después de revisar.
-2. **Mapa** (al centro): ubica los puntos y guía caminando con «Cómo llegar» (H8, H9). Queda al centro para alcanzarlo con el pulgar desde la Lista.
-3. **Perfil** (última): nivel y reputación. Ahí está también **«¿Tienes dudas?» → Ayuda**, disponible incluso sin cuenta, donde el usuario la busca cuando la necesita, sin ocupar una pestaña.
+1. **Lista** (inicio): arriba, el **aviso del PDA del día** (H6). Debajo, los puntos con stock ordenados por cercanía (H1, H5), con estado, precio y confiabilidad. Una lista se lee de arriba abajo, sin tener que manejar un mapa (H10). El botón **Publicar un punto** está fijo abajo (H3).
+2. **Mapa** (al centro): ubica los puntos y lleva a ellos con «Cómo llegar», a pie o en auto (H2).
+3. **Perfil**: reputación del usuario y acceso a **Ayuda** («¿Tienes dudas?»), también disponible sin cuenta.
 
-Pantallas secundarias: Detalle, Publicar, Elegir ubicación, Ayuda, Entrar y Crear cuenta. Se abren desde las pestañas y tienen su botón de volver en la `MDTopAppBar`.
-
-Tener menos pestañas hace la barra más simple, y cada pestaña tiene un ícono y un texto más grandes. Entre pestañas, la transición se desliza según el orden de la barra.
+Pantallas secundarias: Detalle, Publicar, Elegir ubicación, Calidad del aire hoy,
+Ayuda, Entrar y Crear cuenta. Todas tienen el botón de volver en la `MDTopAppBar`.
+Para consultar no hace falta cuenta («Seguir sin cuenta»); solo se pide para
+publicar, reportar u opinar.
 
 ## e) Diversidad y accesibilidad
 
-- **El color nunca va solo.** El estado siempre combina ícono (✔ / ! / ✖), texto y color. Así funciona para personas con daltonismo.
-- **Contraste alto**: el texto blanco va sobre verde, rojo y ámbar oscuros, y el texto principal sobre la superficie clara del tema Material.
-- **Texto de los botones de acción a 16 sp en negrita**, y botones de 52 dp de alto: son áreas táctiles grandes.
-- **Lenguaje cotidiano** en todos los textos («Sí había», «Ya no hay pellet», «Cuéntanos qué viste»), sin tecnicismos.
-- **Ejemplos en cada campo** (helper text) y botón **«Ahora»** para no tener que escribir la hora.
-- Los campos de sacos y precio **se ocultan si no había pellet**, así hay menos campos que llenar.
-- **La ruta muestra minutos a pie además de metros**: es más fácil de entender para quien no calcula distancias.
-- La confiabilidad usa **estrellas**, un formato conocido por cualquier persona que haya visto una reseña, en vez de porcentajes. Además del color, siempre muestra el **número** («3,5») y, en los extremos, la palabra («Excelente», «Poco confiable»). Así no depende solo del color.
-- En los errores de inicio de sesión se usa lenguaje simple («Usuario o contraseña incorrectos.») y hay un botón para **mostrar la contraseña** mientras se escribe.
-- Si no hay conexión, la ruta se muestra como una **línea recta aproximada** y la app lo avisa, en vez de fallar.
-- [Agregar cualquier otro hallazgo de diversidad de tu investigación: edad, conectividad, etc.]
+- **Adultos mayores** (P2, 60 años o más): botones de 52 dp, textos de botón de 16 sp en negrita, lenguaje cotidiano («Sí había», «Ya no hay») y pocas pestañas.
+- **El color nunca va solo:** el estado del stock lleva ícono y texto; la confiabilidad lleva estrellas, número y palabra en los extremos; el PDA lleva ícono y nombre del episodio.
+- **Distintos medios de transporte** (P2 en auto, P1 al supermercado): rutas a pie o en auto.
+- **Distintos combustibles** (P1 y P2 usan pellet, P3 usa leña): cada punto indica si vende pellet, leña seca o ambos.
+- **Sin cuenta también sirve:** quien solo quiere mirar no se topa con una barrera.
+- **Sin buena conexión:** si falla internet, la ruta se muestra como una línea recta aproximada y la lista sigue funcionando.
+- **Privacidad:** no se piden datos personales más allá de un nombre visible, y la contraseña se guarda con hash.
+
+## f) Supuestos sin validar y próximos pasos
+
+Lo que la investigación **no** demuestra, y conviene validar:
+1. **Que las personas estén dispuestas a reportar stock y precio.** La app depende de esos reportes, pero la pauta no lo preguntó. Es lo primero que hay que confirmar.
+2. **Que los vendedores quieran informar su stock.** No se entrevistó a ninguno.
+3. **Que la leña seca sea un problema de abastecimiento.** La única persona que usa leña la compra en verano sin problemas: «Somos precavidos con el tema de la leña».
+4. **Que la escasez de pellet empuje a usar leña húmeda.** Lo dice la hipótesis de la plantilla, pero ninguna persona lo mencionó: ante la falta de pellet buscaron en redes, hicieron viajes o usaron contactos.
+5. **El humo de los vecinos** (el problema principal de P3) solo se aborda en parte, con la pantalla de calidad del aire y los consejos de cuidado.
+
+Próximos pasos:
+- Obtener el episodio del PDA del **pronóstico oficial** y enviarlo como **notificación** (fuera del alcance de la E2).
+- Entrevistar a más personas y a **vendedores de pellet y leña**, preguntando directamente si reportarían stock y precio.

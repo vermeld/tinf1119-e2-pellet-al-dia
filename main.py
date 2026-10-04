@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Ubica Pellet — app colaborativa para encontrar dónde comprar pellet.
+"""Pellet al Día — dónde hay pellet o leña seca y alertas PDA en Temuco.
 
 Ejecutar:
     pip install -r requirements.txt

@@ -24,6 +24,7 @@ from ..utils import hora_valida, plata
 class PantallaFormulario(MDScreen):
     hay = BooleanProperty(True)
     es_tienda = BooleanProperty(True)
+    combustible = StringProperty("pellet")  # pellet, lena o ambos
     comuna = StringProperty(config.SECTORES[0])
     lat = ObjectProperty(None, allownone=True)
     lon = ObjectProperty(None, allownone=True)
@@ -96,6 +97,7 @@ class PantallaFormulario(MDScreen):
             "id": app.nuevo_id(),
             "nombre": i.nombre.text.strip(),
             "tipo": "tienda" if self.es_tienda else "persona",
+            "combustible": self.combustible,
             "comuna": self.comuna,
             "direccion": i.direccion.text.strip(),
             "lat": self.lat,
@@ -120,11 +122,11 @@ class PantallaFormulario(MDScreen):
             return
 
         if punto["hay"]:
-            stock = "Hay pellet: %d sacos a %s" % (punto["sacos"], plata(punto["precio"]))
+            stock = "Hay stock: %d sacos a %s" % (punto["sacos"], plata(punto["precio"]))
         else:
-            stock = "No había pellet"
-        resumen = "%s\n%s, sector %s\n%s\nAtiende de %s a %s" % (
-            punto["nombre"], punto["direccion"], punto["comuna"], stock,
+            stock = "No había stock"
+        resumen = "%s (%s)\n%s, sector %s\n%s\nAtiende de %s a %s" % (
+            punto["nombre"], config.COMBUSTIBLES[punto["combustible"]], punto["direccion"], punto["comuna"], stock,
             punto["desde"], punto["hasta"],
         )
 
@@ -159,6 +161,7 @@ class PantallaFormulario(MDScreen):
         i.error.text = ""
         self.hay = True
         self.es_tienda = True
+        self.combustible = "pellet"
         self.lat = self.lon = None
 
     def cancelar(self):

@@ -287,7 +287,7 @@ class PantallaMapa(MDScreen):
         self._dialogo = MDDialog(
             MDDialogIcon(icon="map-marker-check"),
             MDDialogHeadlineText(text="¡Llegaste!"),
-            MDDialogSupportingText(text="Estás en %s.\n¿Había pellet?" % p["nombre"]),
+            MDDialogSupportingText(text="Estás en %s.\n¿Había stock?" % p["nombre"]),
             MDDialogButtonContainer(
                 MDButton(MDButtonText(text="Después"), style="text",
                          on_release=lambda *a: responder(None)),

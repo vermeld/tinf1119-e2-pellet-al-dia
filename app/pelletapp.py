@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Clase principal de la app Ubica Pellet (KivyMD)."""
+"""Clase principal de la app Pellet al Día (KivyMD)."""
 
 import json
 import os
@@ -24,7 +24,7 @@ from kivymd.uix.dialog import (
 )
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 
-from . import compat, confianza, config
+from . import compat, confianza, config, pda
 from .cuentas import Cuentas
 from .data import datos_iniciales
 from .mapa import MapaPellet
@@ -35,6 +35,7 @@ from .screens.entrar import PantallaEntrar
 from .screens.formulario import PantallaFormulario
 from .screens.lista import PantallaLista
 from .screens.mapa import PantallaMapa
+from .screens.pda import PantallaPDA
 from .screens.perfil import PantallaPerfil
 from .screens.registro import PantallaRegistro
 from .ubicacion import Ubicacion
@@ -43,7 +44,7 @@ from .widgets import ItemNav, OpinionCard, Raiz
 KV_DIR = os.path.join(os.path.dirname(__file__), "kv")
 KV_ARCHIVOS = ("widgets.kv", "raiz.kv", "mapa.kv", "lista.kv", "detalle.kv",
                "formulario.kv", "elegir.kv", "ayuda.kv", "entrar.kv", "registro.kv",
-               "perfil.kv")
+               "perfil.kv", "pda.kv")
 # Orden de las pestañas: define hacia dónde se desliza la transición.
 PESTANAS = ["lista", "mapa", "perfil"]
 INICIO = "lista"  # la primera pantalla después de entrar
@@ -62,7 +63,7 @@ def ahora():
 
 
 class PelletApp(MDApp):
-    title = "Ubica Pellet"
+    title = "Pellet al Día"
 
     # Colores con significado (semáforo de stock). El resto lo pone el tema Material.
     C_HAY = ListProperty(list(config.C_HAY))
@@ -78,6 +79,13 @@ class PelletApp(MDApp):
     pos_usuario = ListProperty(list(config.UBICACION_SIMULADA))
     hay_gps = BooleanProperty(False)
 
+    # Episodio del PDA de hoy (dato de ejemplo en la maqueta, ver pda.py)
+    episodio = StringProperty(config.EPISODIO_DEMO)
+    titulo_episodio = StringProperty("")
+    corto_episodio = StringProperty("")
+    icono_episodio = StringProperty("alert")
+    color_episodio = ListProperty([0, 0, 0, 1])
+
     # Sesión: los .kv se actualizan solos cuando cambian
     con_sesion = BooleanProperty(False)
     nombre_usuario = StringProperty("")
@@ -86,6 +94,7 @@ class PelletApp(MDApp):
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = config.PALETA
 
+        self.on_episodio(self, self.episodio)
         self.archivo = os.path.join(self.user_data_dir, ARCHIVO_DATOS)
         self.puntos = self.cargar()
         self.cuentas = Cuentas(self.user_data_dir)
@@ -107,6 +116,7 @@ class PelletApp(MDApp):
                               (PantallaMapa, "mapa"), (PantallaLista, "lista"),
                               (PantallaDetalle, "detalle"), (PantallaFormulario, "form"),
                               (PantallaElegir, "elegir"), (PantallaPerfil, "perfil"),
+                              (PantallaPDA, "pda"),
                               (PantallaAyuda, "ayuda")):
             self.sm.add_widget(clase(name=nombre))
 
@@ -135,6 +145,7 @@ class PelletApp(MDApp):
             p.setdefault("comentarios", [])
             p.setdefault("autor_id", None)
             p.setdefault("creador_id", None)
+            p.setdefault("combustible", "pellet")
         return puntos
 
     def guardar(self):
@@ -158,6 +169,13 @@ class PelletApp(MDApp):
 
     def nivel(self, uid):
         return self.cuentas.nivel(uid, self.puntos)
+
+    def on_episodio(self, app, valor):
+        n = pda.NIVELES[valor]
+        self.titulo_episodio = n["titulo"]
+        self.corto_episodio = n["corto"]
+        self.icono_episodio = n["icono"]
+        self.color_episodio = list(n["color"])
 
     # ---- cuentas
 
