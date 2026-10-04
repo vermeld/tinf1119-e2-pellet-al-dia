@@ -133,6 +133,15 @@
                     FilaIcono:
                         icono: 'play-circle-outline'
                         texto: 'Durante una ruta, «Simular caminata» mueve tu punto por el camino.'
+                    # BOTÓN «Restaurar datos de ejemplo»: vuelve a poner los puntos de ejemplo
+                    # con horas recientes (útil antes de presentar). Está en pelletapp.py.
+                    MDButton:
+                        style: 'outlined'
+                        on_release: app.restaurar_ejemplo()
+                        MDButtonIcon:
+                            icon: 'restore'
+                        MDButtonText:
+                            text: 'Restaurar datos de ejemplo'
 
                 # BOTÓN «Entendido»: vuelve al perfil.
                 BotonAncho:

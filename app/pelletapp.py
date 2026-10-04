@@ -387,6 +387,31 @@ class PelletApp(MDApp):
         self.ir_a("mapa")
         self.sm.get_screen("mapa").elegir_modo(punto_id)
 
+    # BOTÓN «Restaurar datos de ejemplo» (Ayuda › En el computador): vuelve a poner
+    # los 10 puntos de ejemplo con horas frescas. Las cuentas no se borran.
+    def restaurar_ejemplo(self):
+        def si(*args):
+            dialogo.dismiss()
+            self.puntos = datos_iniciales()
+            self.guardar()
+            self.ir_a("lista")
+            self.avisar("Listo: se restauraron los datos de ejemplo.")
+
+        dialogo = MDDialog(
+            MDDialogIcon(icon="restore"),
+            MDDialogHeadlineText(text="¿Restaurar los datos de ejemplo?"),
+            MDDialogSupportingText(
+                text="Vuelven los 10 puntos de ejemplo con horas recientes. Se borran los "
+                     "puntos, reportes y opiniones que hayas agregado. Tu cuenta no se borra."),
+            MDDialogButtonContainer(
+                MDButton(MDButtonText(text="Cancelar"), style="text",
+                         on_release=lambda *a: dialogo.dismiss()),
+                MDButton(MDButtonText(text="Restaurar"), style="filled", on_release=si),
+                spacing="8dp",
+            ),
+        )
+        dialogo.open()
+
     # Mensaje corto que aparece abajo (Snackbar), ej. «¡Gracias! …».
     def avisar(self, texto):
         MDSnackbar(

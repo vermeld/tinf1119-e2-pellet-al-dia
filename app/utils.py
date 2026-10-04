@@ -62,7 +62,10 @@ def describir(p):
     unidad = "saco de leña" if combustible == "lena" else "saco 15 kg"
 
     if p["hay"]:
-        estado = "Hay %s · quedaban %d sacos" % (que, p["sacos"])
+        if p["sacos"]:
+            estado = "Hay %s · quedaban %d sacos" % (que, p["sacos"])
+        else:  # alguien confirmó que hay, pero sin decir cuántos sacos
+            estado = "Hay %s" % que
         precio = "%s\n[size=12sp]%s[/size]" % (plata(p["precio"]), unidad) if p["precio"] else ""
         color, icono = "C_HAY", "check-circle"
     else:
