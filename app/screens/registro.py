@@ -7,14 +7,17 @@ from kivymd.uix.screen import MDScreen
 from ..cuentas import validar_registro
 
 
+# Lógica de la PANTALLA CREAR CUENTA (interfaz en kv/registro.kv).
 class PantallaRegistro(MDScreen):
 
+    # Al entrar: deja los campos vacíos.
     def on_pre_enter(self, *args):
         for campo in ("nombre", "usuario", "clave", "clave2"):
             self.ids[campo].text = ""
             self.ids[campo].error = False
         self.ids.error.text = ""
 
+    # BOTÓN «Crear mi cuenta»: valida los datos y crea la cuenta.
     def crear(self):
         i = self.ids
         for campo in ("nombre", "usuario", "clave", "clave2"):

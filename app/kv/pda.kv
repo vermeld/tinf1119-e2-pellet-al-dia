@@ -1,4 +1,6 @@
 # Aviso del PDA en la Lista (se toca para ver el detalle).
+# AVISO PDA: la franja de color con el episodio del día («Hoy: Alerta ambiental»).
+# Al tocarla se abre la pantalla Calidad del aire hoy.
 <AvisoPDA@MDCard>:
     style: 'filled'
     size_hint_y: None
@@ -37,6 +39,7 @@
         icon_color: 1, 1, 1, 1
         pos_hint: {'center_y': .5}
 
+# PANTALLA CALIDAD DEL AIRE HOY (PDA). Los textos de cada nivel están en app/pda.py.
 <PantallaPDA>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -46,6 +49,7 @@
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
+                # BOTÓN «←»: vuelve a la lista.
                 MDActionTopAppBarButton:
                     icon: 'arrow-left'
                     on_release: app.ir_a('lista', 'right')
@@ -61,6 +65,7 @@
                 spacing: dp(14)
 
                 # Episodio de hoy, grande
+                # TARJETA GRANDE con el episodio de hoy (el color cambia según el nivel).
                 MDCard:
                     style: 'filled'
                     size_hint_y: None
@@ -105,6 +110,7 @@
 
                 Titulo:
                     text: '¿Qué hago hoy?'
+                # TARJETA «¿Qué hago hoy?»: screens/pda.py la llena con los consejos del nivel.
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -119,6 +125,7 @@
                         adaptive_height: True
                         spacing: dp(14)
 
+                # TARJETA «Los niveles del PDA»: qué significa Alerta, Preemergencia y Emergencia.
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -145,12 +152,14 @@
                 TextoSuave:
                     text: 'Maqueta: el episodio de hoy es un dato de ejemplo. En la versión final se obtiene del pronóstico oficial y llega como aviso al celular. Las reglas exactas y horarios los informa la autoridad.'
 
+                # BOTÓN «Ver pronóstico oficial»: abre airechile.mma.gob.cl en el navegador.
                 BotonAncho:
                     on_release: root.abrir_oficial()
                     MDButtonIcon:
                         icon: 'open-in-new'
                     TextoBoton:
                         text: 'Ver pronóstico oficial'
+                # BOTÓN «Simular otro día (demo)»: cambia el episodio para mostrarlo en la presentación.
                 MDButton:
                     style: 'text'
                     pos_hint: {'center_x': .5}

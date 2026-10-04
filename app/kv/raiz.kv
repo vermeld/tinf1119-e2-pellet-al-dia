@@ -1,5 +1,6 @@
 # Estructura general: pantallas arriba y barra de navegación inferior (como una app de celular).
 
+# Cómo se ve cada pestaña de la barra de abajo: un ícono y un texto.
 <ItemNav>:
     MDNavigationItemIcon:
         icon: root.icono
@@ -10,21 +11,27 @@
     orientation: 'vertical'
     md_bg_color: app.theme_cls.surfaceColor
 
+    # Aquí adentro se van cambiando todas las pantallas (lista, mapa, perfil, etc.).
     MDScreenManager:
         id: sm
 
+    # BARRA DE ABAJO (navegación) con las 3 pestañas.
+    # Al tocar una se llama a app.al_cambiar_pestana() (pelletapp.py).
     MDNavigationBar:
         id: nav
         on_switch_tabs: app.al_cambiar_pestana(args[1])
+        # PESTAÑA «Lista»: el botón de la lista. Es la pantalla de inicio.
         ItemNav:
             pantalla: 'lista'
             icono: 'format-list-bulleted'
             texto: 'Lista'
             active: True
+        # PESTAÑA «Mapa»: este es el botón del mapa en la barra de abajo.
         ItemNav:
             pantalla: 'mapa'
             icono: 'map'
             texto: 'Mapa'
+        # PESTAÑA «Perfil»: el botón del perfil (reputación, ayuda y cerrar sesión).
         ItemNav:
             pantalla: 'perfil'
             icono: 'account-circle-outline'

@@ -19,6 +19,7 @@ from .. import confianza, geo
 from ..utils import describir, hace, plata
 from ..widgets import OpinionCard
 
+# Texto del diálogo que abre el BOTÓN «¿Cómo se calcula?».
 EXPLICACION = (
     "De 0 a 5 estrellas, según tres cosas:\n\n"
     "• Frescura (40 %): qué tan reciente es el último reporte. Pierde valor en 12 horas.\n"
@@ -32,6 +33,7 @@ EXPLICACION = (
 )
 
 
+# Lógica de la PANTALLA DETALLE (interfaz en kv/detalle.kv).
 class PantallaDetalle(MDScreen):
     punto_id = NumericProperty(0)
     color_estado = ListProperty([0, 0, 0, 1])
@@ -42,11 +44,13 @@ class PantallaDetalle(MDScreen):
     tiene_opinion = BooleanProperty(False)
     mi_reporte = StringProperty("")  # 'si', 'no' o '' (no dice)
 
+    # Al abrir el detalle: llena los datos, carga tu opinión y vuelve al principio.
     def on_pre_enter(self, *args):
         self.mostrar()
         self.cargar_mi_opinion()
         self.ids.scroll.scroll_y = 1
 
+    # Llena la pantalla con los datos del punto: estado, precio, confiabilidad, etc.
     def mostrar(self):
         app = App.get_running_app()
         p = app.buscar(self.punto_id)
@@ -87,6 +91,7 @@ class PantallaDetalle(MDScreen):
             if n else "Aún sin opiniones"
         self.mostrar_opiniones(p)
 
+    # Arma la lista de opiniones (las más útiles primero).
     def mostrar_opiniones(self, p):
         app = App.get_running_app()
         caja = self.ids.opiniones
@@ -119,6 +124,7 @@ class PantallaDetalle(MDScreen):
 
     # ---- tu opinión
 
+    # Si ya opinaste antes, rellena el formulario con tu opinión para editarla.
     def cargar_mi_opinion(self):
         app = App.get_running_app()
         p = app.buscar(self.punto_id)
@@ -129,6 +135,7 @@ class PantallaDetalle(MDScreen):
         self.ids.error_opinion.text = ""
         self.mi_reporte = ""
 
+    # BOTÓN «Publicar opinión»: valida las estrellas y el texto, y la guarda.
     def publicar_opinion(self):
         app = App.get_running_app()
         estrellas = self.ids.selector_estrellas.valor
@@ -151,6 +158,7 @@ class PantallaDetalle(MDScreen):
             app.avisar("¡Gracias! Tu opinión ya está publicada." if nueva
                        else "Actualizaste tu opinión.")
 
+    # BOTONES «Útil» / «No útil» de cada opinión.
     def votar(self, comentario_id, valor):
         app = App.get_running_app()
         if app.votar(self.punto_id, comentario_id, valor):
@@ -158,6 +166,7 @@ class PantallaDetalle(MDScreen):
 
     # ---- reportar stock
 
+    # BOTÓN «¿Cómo se calcula?»: abre el diálogo con la explicación.
     def explicar_confianza(self):
         dialogo = MDDialog(
             MDDialogIcon(icon="shield-check"),
@@ -171,6 +180,7 @@ class PantallaDetalle(MDScreen):
         )
         dialogo.open()
 
+    # BOTONES «Sigue habiendo» / «Ya no hay»: antes de guardar, pide confirmar con un diálogo.
     def pedir_confirmacion(self, hay):
         """Pide confirmar antes de cambiar el dato que ven todos."""
         app = App.get_running_app()
@@ -204,6 +214,7 @@ class PantallaDetalle(MDScreen):
         )
         self._dialogo.open()
 
+    # Al presionar «Sí, confirmar» en el diálogo: guarda el reporte.
     def _confirmar(self, hay):
         self._dialogo.dismiss()
         app = App.get_running_app()

@@ -12,6 +12,7 @@ from kivy.network.urlrequest import UrlRequest
 from .config import MODOS, RUTAS_URL, USER_AGENT
 
 
+# Pide la ruta por internet sin congelar la app. Cuando responde, llama a al_terminar().
 def pedir_ruta(origen, destino, modo, al_terminar):
     """modo: 'pie' o 'auto'.
     al_terminar(ruta, aproximada, velocidad) recibe una lista de (lat, lon) y la
@@ -19,6 +20,7 @@ def pedir_ruta(origen, destino, modo, al_terminar):
     url = RUTAS_URL[modo].format(lat1=origen[0], lon1=origen[1], lat2=destino[0], lon2=destino[1])
     velocidad_respaldo = MODOS[modo]["velocidad"]
 
+    # Si el servidor respondió bien: saca los puntos de la ruta.
     def ok(req, resultado):
         try:
             if isinstance(resultado, (str, bytes)):
@@ -32,6 +34,7 @@ def pedir_ruta(origen, destino, modo, al_terminar):
         except (KeyError, IndexError, TypeError, ValueError):
             respaldo()
 
+    # Si falló (por ejemplo, sin internet): se usa una línea recta.
     def respaldo(*args):
         al_terminar([tuple(origen), tuple(destino)], True, velocidad_respaldo)
 

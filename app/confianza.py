@@ -37,6 +37,7 @@ def _horas(iso):
         return 999.0
 
 
+# CÁLCULO DE LAS ESTRELLAS de confiabilidad de un punto (la fórmula está arriba).
 def calcular(p, cuentas, puntos):
     reportes = sorted(p.get("reportes", []), key=lambda r: r["t"], reverse=True)
     if not reportes:
@@ -78,6 +79,7 @@ def calcular(p, cuentas, puntos):
     return _resultado(puntaje, recientes, detalle)
 
 
+# Pasa el puntaje (0 a 1) a estrellas (0 a 5, con medias).
 def a_estrellas(puntaje):
     """0..1 -> 0, 0.5, 1, ... 5 (a la media estrella más cercana)."""
     return round(max(0.0, min(1.0, puntaje)) * 10) / 2
@@ -88,6 +90,7 @@ def texto_numero(estrellas):
     return ("%g" % estrellas).replace(".", ",")
 
 
+# Elige el color: amarillo (5 estrellas), rojo (1½ o menos) o verde.
 def _resultado(puntaje, recientes, detalle):
     estrellas = a_estrellas(puntaje)
     if estrellas >= 5:
@@ -108,6 +111,7 @@ def _resultado(puntaje, recientes, detalle):
     }
 
 
+# Promedio de las estrellas que pusieron las personas en sus opiniones.
 def estrellas(p):
     """Promedio de estrellas de las opiniones: (promedio, cantidad)."""
     notas = [c["estrellas"] for c in p.get("comentarios", [])]

@@ -1,3 +1,5 @@
+# PANTALLA «Marca dónde está»: se abre desde el formulario.
+# Se mueve el mapa debajo de un pin fijo. La lógica está en screens/elegir.py.
 <PantallaElegir>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -7,6 +9,7 @@
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
+                # BOTÓN «←»: vuelve al formulario.
                 MDActionTopAppBarButton:
                     icon: 'arrow-left'
                     on_release: app.ir_a('form', 'right')
@@ -14,6 +17,7 @@
                 text: 'Marca dónde está'
 
         MDRelativeLayout:
+            # El mapa, que se mueve con el dedo.
             MapaPellet:
                 id: mapa
                 double_tap_zoom: True
@@ -39,6 +43,7 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(8)
+                    # BOTÓN «Estoy aquí»: centra el mapa en tu ubicación.
                     MDButton:
                         style: 'outlined'
                         on_release: root.ir_a_mi_ubicacion()
@@ -46,6 +51,7 @@
                             icon: 'crosshairs-gps'
                         MDButtonText:
                             text: 'Estoy aquí'
+                    # BOTÓN «Usar este lugar»: guarda el centro del mapa como ubicación del punto.
                     MDButton:
                         style: 'filled'
                         on_release: root.usar()

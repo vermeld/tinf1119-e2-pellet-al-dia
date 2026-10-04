@@ -1,9 +1,12 @@
+# Estilo de los campos de texto del formulario (con borde).
 <Campo@MDTextField>:
     mode: 'outlined'
     multiline: False
     size_hint_y: None
     height: dp(56)
 
+# PANTALLA PUBLICAR (formulario): se abre con «Publicar un punto» en la Lista.
+# Las validaciones y el guardado están en screens/formulario.py.
 <PantallaFormulario>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -13,6 +16,7 @@
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
+                # BOTÓN «X» (cerrar): cancela y vuelve a la lista.
                 MDActionTopAppBarButton:
                     icon: 'close'
                     on_release: root.cancelar()
@@ -31,6 +35,7 @@
                 TextoSuave:
                     text: ('Publicarás como ' + app.nombre_usuario + '. ' if app.con_sesion else 'Necesitas una cuenta para publicar. ') + 'Los campos con * son obligatorios.'
 
+                # CAMPO «Local o persona que vende».
                 Campo:
                     id: nombre
                     MDTextFieldLeadingIcon:
@@ -46,6 +51,7 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(8)
+                    # BOTÓN «Tienda o bencinera» (tipo de punto).
                     MDButton:
                         style: 'filled' if root.es_tienda else 'outlined'
                         on_release: root.es_tienda = True
@@ -53,6 +59,7 @@
                             icon: 'storefront-outline'
                         MDButtonText:
                             text: 'Tienda o bencinera'
+                    # BOTÓN «Particular»: alguien que vende en su casa.
                     MDButton:
                         style: 'outlined' if root.es_tienda else 'filled'
                         on_release: root.es_tienda = False
@@ -66,16 +73,19 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(6)
+                    # BOTÓN «Pellet» (qué vende).
                     MDButton:
                         style: 'filled' if root.combustible == 'pellet' else 'outlined'
                         on_release: root.combustible = 'pellet'
                         MDButtonText:
                             text: 'Pellet'
+                    # BOTÓN «Leña seca» (qué vende).
                     MDButton:
                         style: 'filled' if root.combustible == 'lena' else 'outlined'
                         on_release: root.combustible = 'lena'
                         MDButtonText:
                             text: 'Leña seca'
+                    # BOTÓN «Ambos»: pellet y leña.
                     MDButton:
                         style: 'filled' if root.combustible == 'ambos' else 'outlined'
                         on_release: root.combustible = 'ambos'
@@ -84,6 +94,7 @@
 
                 Titulo:
                     text: 'Sector'
+                # BOTÓN de sector: abre el menú con los sectores de Temuco.
                 MDButton:
                     style: 'tonal'
                     on_release: root.abrir_comunas(self)
@@ -92,6 +103,7 @@
                     MDButtonText:
                         text: root.comuna
 
+                # CAMPO «Dirección exacta».
                 Campo:
                     id: direccion
                     MDTextFieldLeadingIcon:
@@ -104,6 +116,7 @@
 
                 Titulo:
                     text: 'Ubicación en el mapa *'
+                # BOTÓN «Ubicación en el mapa»: abre la pantalla para marcar el lugar (kv/elegir.kv).
                 MDCard:
                     id: caja_ubicacion
                     style: 'outlined'
@@ -132,6 +145,7 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(8)
+                    # BOTÓN «Sí había»: había stock cuando fuiste.
                     MDButton:
                         theme_width: 'Custom'
                         size_hint_x: .5
@@ -147,6 +161,7 @@
                             text: 'Sí había'
                             theme_text_color: 'Custom' if root.hay else 'Primary'
                             text_color: 1, 1, 1, 1
+                    # BOTÓN «No había»: oculta los campos de sacos y precio.
                     MDButton:
                         theme_width: 'Custom'
                         size_hint_x: .5
@@ -172,6 +187,7 @@
                     height: self.minimum_height if root.hay else 0
                     opacity: 1 if root.hay else 0
                     disabled: not root.hay
+                    # CAMPO «Sacos que quedaban» (solo números).
                     Campo:
                         id: sacos
                         input_filter: 'int'
@@ -182,6 +198,7 @@
                         MDTextFieldHelperText:
                             text: 'Aunque sea aproximado'
                             mode: 'persistent'
+                    # CAMPO «Precio por saco» (solo números).
                     Campo:
                         id: precio
                         input_filter: 'int'
@@ -196,6 +213,7 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(8)
+                    # CAMPO «Hora en que pasaste» (formato HH:MM).
                     Campo:
                         id: hora
                         MDTextFieldLeadingIcon:
@@ -205,6 +223,7 @@
                         MDTextFieldHelperText:
                             text: 'HH:MM (vacío = ahora)'
                             mode: 'persistent'
+                    # BOTÓN «Ahora»: pone la hora actual.
                     MDButton:
                         style: 'tonal'
                         pos_hint: {'top': 1}
@@ -217,17 +236,20 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(8)
+                    # CAMPO «Abre» (hora de apertura).
                     Campo:
                         id: desde
                         text: '09:00'
                         MDTextFieldHintText:
                             text: 'Abre'
+                    # CAMPO «Cierra» (hora de cierre).
                     Campo:
                         id: hasta
                         text: '20:00'
                         MDTextFieldHintText:
                             text: 'Cierra'
 
+                # Aquí aparece el mensaje de error de la validación.
                 MDLabel:
                     id: error
                     text: ''
@@ -238,6 +260,7 @@
                     text_color: app.C_NOHAY
                     adaptive_height: True
 
+                # BOTÓN «Publicar»: valida todo y muestra el resumen antes de publicar (revisar).
                 BotonAncho:
                     on_release: root.revisar()
                     MDButtonIcon:

@@ -18,6 +18,7 @@ USUARIOS_EJEMPLO = {
 }
 
 
+# Los vecinos de ejemplo (sin contraseña, no se puede entrar con ellos).
 def usuarios_iniciales():
     return [
         {"id": uid, "nombre": nombre, "usuario": "vecino%d" % uid,
@@ -26,6 +27,7 @@ def usuarios_iniciales():
     ]
 
 
+# Arma un punto de ejemplo con sus reportes y opiniones.
 def _p(id_, nombre, tipo, sector, direccion, lat, lon, hay, sacos, precio,
        desde, hasta, reportes, comentarios=()):
     """reportes: lista de (usuario_id, hay, hace_minutos); el primero es el más nuevo.
@@ -48,6 +50,7 @@ def _p(id_, nombre, tipo, sector, direccion, lat, lon, hay, sacos, precio,
     }
 
 
+# Los 10 puntos de ejemplo en Temuco y Padre Las Casas.
 def datos_iniciales():
     puntos = [
         _p(1, "Ferretería Los Aromos", "tienda", "Centro", "Manuel Montt 850",

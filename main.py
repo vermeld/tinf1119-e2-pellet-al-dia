@@ -14,5 +14,6 @@ Config.set("input", "mouse", "mouse,multitouch_on_demand")
 
 from app.pelletapp import PelletApp  # noqa: E402
 
+# Punto de partida: al ejecutar «python main.py» se crea la app y se abre la ventana.
 if __name__ == "__main__":
     PelletApp().run()

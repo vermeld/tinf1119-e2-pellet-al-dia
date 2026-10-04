@@ -7,6 +7,7 @@ from kivy.utils import platform
 from . import geo
 
 
+# Dónde estás: GPS en el celular o ubicación simulada en el computador.
 class Ubicacion:
     """Mantiene app.pos_usuario al día.
 
@@ -21,6 +22,7 @@ class Ubicacion:
         self._ruta = None
         self._recorrido = 0
 
+    # Enciende el GPS (solo en Android, pidiendo permiso).
     def iniciar(self):
         if platform == "android":
             try:
@@ -34,24 +36,29 @@ class Ubicacion:
             except Exception:  # sin permiso o sin GPS: seguimos con la simulada
                 self.app.hay_gps = False
 
+    # True si el GPS está funcionando.
     @property
     def hay_gps(self):
         return self.app.hay_gps
 
+    # El GPS avisa una nueva posición.
     def _on_gps(self, **datos):
         # plyer llama desde otro hilo: pasamos el dato al hilo de Kivy
         pos = (datos["lat"], datos["lon"])
         Clock.schedule_once(lambda dt: self.mover_a(pos))
 
+    # Cambia tu posición; el mapa y la lista se actualizan solos.
     def mover_a(self, pos):
         self.app.pos_usuario = [pos[0], pos[1]]
 
     # ---- caminata simulada (escritorio)
 
+    # True mientras la simulación está andando.
     @property
     def simulando(self):
         return self._evento is not None
 
+    # SIMULAR CAMINATA O VIAJE: avanza tu punto por la ruta 15 veces por segundo.
     def simular(self, ruta, velocidad):
         """Avanza por la ruta a 'velocidad' m/s, desde donde estás ahora."""
         self.detener()
@@ -61,6 +68,7 @@ class Ubicacion:
         self._recorrido = geo.largo(ruta[:geo.mas_cercano(ruta, self.app.pos_usuario) + 1])
         self._evento = Clock.schedule_interval(self._paso, 1 / 15)
 
+    # Un paso de la simulación.
     def _paso(self, dt):
         self._recorrido += self._velocidad * dt
         pos, _ = geo.punto_en(self._ruta, self._recorrido)
@@ -68,6 +76,7 @@ class Ubicacion:
         if self._recorrido >= self._total:
             self.detener()
 
+    # Para la simulación.
     def detener(self):
         if self._evento is not None:
             self._evento.cancel()

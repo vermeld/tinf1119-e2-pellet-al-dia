@@ -1,9 +1,13 @@
+# PANTALLA LISTA (inicio): es la primera que aparece al entrar.
+# Muestra el aviso del PDA, los filtros y la lista de puntos.
+# La lógica (filtrar, ordenar y armar las tarjetas) está en screens/lista.py.
 <PantallaLista>:
     md_bg_color: app.theme_cls.surfaceColor
 
     MDBoxLayout:
         orientation: 'vertical'
 
+        # Barra de arriba con el nombre de la app.
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
@@ -17,9 +21,11 @@
             padding: [dp(16), dp(4), dp(16), dp(12)]
             spacing: dp(12)
 
+            # AVISO PDA «Hoy: Alerta ambiental»: la franja de color (su diseño está en kv/pda.kv).
             # Aviso del PDA arriba de todo: 3 de 3 encuestados no se enteran a tiempo
             AvisoPDA:
 
+            # Texto que dice cuántos puntos tienen stock (lo escribe lista.py).
             TextoSuave:
                 id: resumen
 
@@ -27,18 +33,21 @@
             MDBoxLayout:
                 adaptive_height: True
                 spacing: dp(8)
+                # BOTÓN «Con stock» (filtro): muestra solo los puntos donde hay.
                 MDButton:
                     id: f_con
                     style: 'filled' if root.solo_con else 'outlined'
                     on_release: root.poner_filtro(True)
                     MDButtonText:
                         text: 'Con stock'
+                # BOTÓN «Todos» (filtro): muestra todos los puntos, con y sin stock.
                 MDButton:
                     id: f_todos
                     style: 'outlined' if root.solo_con else 'filled'
                     on_release: root.poner_filtro(False)
                     MDButtonText:
                         text: 'Todos'
+                # BOTÓN de sector («Todo Temuco»): abre el menú para elegir un sector.
                 MDButton:
                     id: f_comuna
                     style: 'tonal'
@@ -48,6 +57,7 @@
                     MDButtonText:
                         text: root.comuna
 
+            # LISTA DE PUNTOS: lista.py agrega aquí una tarjeta (PuntoCard) por cada punto.
             MDScrollView:
                 do_scroll_x: False
                 MDBoxLayout:
@@ -58,6 +68,7 @@
                     padding: [0, 0, 0, dp(8)]
 
             # Publicar: siempre visible bajo la lista
+            # BOTÓN «Publicar un punto»: abre el formulario para publicar (pantalla 'form').
             BotonAncho:
                 on_release: app.ir_a('form')
                 MDButtonIcon:

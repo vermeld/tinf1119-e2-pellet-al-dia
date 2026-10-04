@@ -1,3 +1,4 @@
+# PANTALLA CREAR CUENTA (registro). La validación está en app/cuentas.py (validar_registro).
 <PantallaRegistro>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -7,6 +8,7 @@
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
+                # BOTÓN «←»: vuelve a Entrar.
                 MDActionTopAppBarButton:
                     icon: 'arrow-left'
                     on_release: app.ir_a('entrar', 'right')
@@ -25,6 +27,7 @@
                 TextoSuave:
                     text: 'Con tu cuenta puedes publicar puntos, reportar el stock, opinar y calificar opiniones. Tu reputación crece con cada aporte útil.'
 
+                # CAMPO «Tu nombre».
                 Campo:
                     id: nombre
                     MDTextFieldLeadingIcon:
@@ -35,6 +38,7 @@
                         text: 'Así te verán los demás. Ej.: Camila R.'
                         mode: 'persistent'
 
+                # CAMPO «Nombre de usuario».
                 Campo:
                     id: usuario
                     MDTextFieldLeadingIcon:
@@ -45,6 +49,7 @@
                         text: '3 a 20 letras o números, sin espacios'
                         mode: 'persistent'
 
+                # CAMPO «Contraseña».
                 Clave:
                     id: clave
                     MDTextFieldLeadingIcon:
@@ -55,6 +60,7 @@
                         text: 'Mínimo 6 caracteres'
                         mode: 'persistent'
 
+                # CAMPO «Repite la contraseña».
                 Clave:
                     id: clave2
                     on_text_validate: root.crear()
@@ -63,6 +69,7 @@
                     MDTextFieldHintText:
                         text: 'Repite la contraseña *'
 
+                # Mensaje de error del registro.
                 MDLabel:
                     id: error
                     text: ''
@@ -71,6 +78,7 @@
                     text_color: app.C_NOHAY
                     adaptive_height: True
 
+                # BOTÓN «Crear mi cuenta».
                 BotonAncho:
                     on_release: root.crear()
                     MDButtonIcon:
@@ -78,6 +86,7 @@
                     TextoBoton:
                         text: 'Crear mi cuenta'
 
+                # BOTÓN «Ya tengo cuenta»: vuelve a Entrar.
                 MDButton:
                     style: 'text'
                     pos_hint: {'center_x': .5}

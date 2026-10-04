@@ -1,3 +1,4 @@
+# PANTALLA AYUDA: se abre desde Perfil › «¿Tienes dudas?». Son solo textos explicativos.
 <PantallaAyuda>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -7,6 +8,7 @@
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
+                # BOTÓN «←»: vuelve al perfil.
                 MDActionTopAppBarButton:
                     icon: 'arrow-left'
                     on_release: app.ir_a('perfil', 'right')
@@ -24,6 +26,7 @@
                 Texto:
                     text: 'Pellet al Día funciona gracias a los vecinos de Temuco y Padre Las Casas. Cada persona que ve pellet o leña seca (o que se acabó) lo cuenta, y así nadie hace el viaje en vano.'
 
+                # TARJETA «Qué significa cada color».
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -47,6 +50,7 @@
                         icono: 'circle-slice-8'
                         texto: 'Punto azul: tú. La línea azul es el camino a pie.'
 
+                # TARJETA «En 4 pasos».
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -70,6 +74,7 @@
                         icono: 'numeric-4-circle'
                         texto: 'Al llegar, cuéntale a los demás si había pellet. Si encontraste un punto nuevo, usa «Publicar un punto» en la Lista.'
 
+                # TARJETA «¿Puedo confiar en el dato?».
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -93,6 +98,7 @@
                         icono: 'thumb-up-outline'
                         texto: 'Marca las opiniones como útiles o no: así los demás ganan o pierden reputación.'
 
+                # TARJETA «Calidad del aire (PDA)».
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -110,6 +116,7 @@
                         icono: 'map-marker-radius'
                         texto: 'Las restricciones rigen en todo Temuco y Padre Las Casas.'
 
+                # TARJETA «En el computador (demo)».
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -127,6 +134,7 @@
                         icono: 'play-circle-outline'
                         texto: 'Durante una ruta, «Simular caminata» mueve tu punto por el camino.'
 
+                # BOTÓN «Entendido»: vuelve al perfil.
                 BotonAncho:
                     on_release: app.ir_a('perfil', 'right')
                     MDButtonIcon:

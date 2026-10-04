@@ -7,11 +7,13 @@ from datetime import datetime, timedelta
 from .config import COMBUSTIBLES, HORAS_PARA_DUDAR
 
 
+# Formato de dinero chileno.
 def plata(valor):
     """5290 -> '$5.290'"""
     return "$" + format(int(valor), ",d").replace(",", ".")
 
 
+# Convierte una fecha en «hace 25 min», «hace 3 h», etc.
 def hace(iso):
     """Convierte una marca de tiempo en 'hace 25 min'."""
     try:
@@ -29,6 +31,7 @@ def hace(iso):
     return t.strftime("el %d/%m a las %H:%M")
 
 
+# ¿El dato tiene más de 6 horas? Entonces se muestra en ámbar («Puede que ya no quede»).
 def es_viejo(iso):
     try:
         t = datetime.fromisoformat(iso)
@@ -37,14 +40,17 @@ def es_viejo(iso):
     return datetime.now() - t > timedelta(hours=HORAS_PARA_DUDAR)
 
 
+# Revisa que una hora esté en formato HH:MM (la usa la validación del formulario).
 def hora_valida(texto):
     return bool(re.fullmatch(r"([01]\d|2[0-3]):[0-5]\d", texto.strip()))
 
 
+# Fecha de hace X minutos (para los datos de ejemplo).
 def hace_rato(minutos):
     return (datetime.now() - timedelta(minutes=minutos)).isoformat(timespec="seconds")
 
 
+# Arma los textos de un punto (estado, precio, color, etc.) que usan la lista y el detalle.
 def describir(p):
     """Textos que se muestran de un punto, compartidos por la lista y el detalle.
 

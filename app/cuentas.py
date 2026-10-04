@@ -33,10 +33,12 @@ NIVELES = [
 ]
 
 
+# Convierte la contraseña en un código (hash): así nunca se guarda tal cual.
 def _hash(clave, sal):
     return hashlib.pbkdf2_hmac("sha256", clave.encode("utf-8"), bytes.fromhex(sal), ITERACIONES).hex()
 
 
+# VALIDACIÓN del formulario Crear cuenta.
 def validar_registro(nombre, usuario, clave, clave2):
     """Devuelve (campo, mensaje) con el primer error, o None si todo está bien."""
     if len(nombre.strip()) < 2:
@@ -50,6 +52,7 @@ def validar_registro(nombre, usuario, clave, clave2):
     return None
 
 
+# Maneja los usuarios: guardar, crear cuenta, entrar, salir y reputación.
 class Cuentas:
     def __init__(self, carpeta):
         self.archivo = os.path.join(carpeta, "usuarios.json")
@@ -99,6 +102,7 @@ class Cuentas:
     def actual(self):
         return self.buscar(self.sesion_id) if self.sesion_id else None
 
+    # Crea la cuenta (la llama app.registrar).
     def registrar(self, nombre, usuario, clave):
         """Crea la cuenta y deja la sesión abierta. Devuelve (ok, mensaje)."""
         if self.por_usuario(usuario):
@@ -117,6 +121,7 @@ class Cuentas:
         self.guardar()
         return True, "¡Bienvenido/a, %s!" % u["nombre"]
 
+    # Compara el hash de la contraseña escrita con el que está guardado.
     def entrar(self, usuario, clave):
         u = self.por_usuario(usuario)
         # mismo mensaje en ambos casos: no revelamos qué usuarios existen
@@ -132,6 +137,7 @@ class Cuentas:
 
     # ---- reputación
 
+    # Cuenta tus aportes: puntos publicados, reportes, opiniones y votos útiles.
     def estadisticas(self, uid, puntos):
         e = {"publicados": 0, "reportes": 0, "opiniones": 0, "utiles": 0, "no_utiles": 0}
         clave = str(uid)
@@ -149,6 +155,7 @@ class Cuentas:
                           + e["no_utiles"] * PTS_VOTO_NO_UTIL)
         return e
 
+    # Con los puntos de reputación decide tu nivel: Nuevo, Confiable o Experto.
     def nivel(self, uid, puntos):
         """Devuelve un dict con nombre, peso, ícono, puntos y cuánto falta para subir."""
         pts = self.estadisticas(uid, puntos)["puntos"]

@@ -1,3 +1,4 @@
+# Estilo del campo de contraseña (oculta lo que escribes).
 <Clave@MDTextField>:
     mode: 'outlined'
     multiline: False
@@ -5,6 +6,8 @@
     size_hint_y: None
     height: dp(56)
 
+# PANTALLA ENTRAR (inicio de sesión): aparece al abrir la app si nadie ha entrado.
+# La lógica está en screens/entrar.py y app/cuentas.py.
 <PantallaEntrar>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -42,6 +45,7 @@
                 size_hint_y: None
                 height: dp(4)
 
+            # CAMPO «Usuario».
             MDTextField:
                 id: usuario
                 mode: 'outlined'
@@ -54,6 +58,7 @@
                 MDTextFieldHintText:
                     text: 'Usuario'
 
+            # CAMPO «Contraseña».
             Clave:
                 id: clave
                 on_text_validate: root.entrar()
@@ -62,6 +67,7 @@
                 MDTextFieldHintText:
                     text: 'Contraseña'
 
+            # BOTÓN «Mostrar / Ocultar contraseña».
             MDButton:
                 style: 'text'
                 on_release: root.alternar_ver_clave()
@@ -70,6 +76,7 @@
                 MDButtonText:
                     text: 'Ocultar contraseña' if not clave.password else 'Mostrar contraseña'
 
+            # Mensaje de error (ej. «Usuario o contraseña incorrectos»).
             MDLabel:
                 id: error
                 text: ''
@@ -78,12 +85,14 @@
                 text_color: app.C_NOHAY
                 adaptive_height: True
 
+            # BOTÓN «Entrar»: revisa el usuario y la contraseña.
             BotonAncho:
                 on_release: root.entrar()
                 MDButtonIcon:
                     icon: 'login'
                 TextoBoton:
                     text: 'Entrar'
+            # BOTÓN «Crear una cuenta»: va a la pantalla de registro.
             BotonAncho:
                 style: 'outlined'
                 on_release: app.ir_a('registro')
@@ -92,6 +101,7 @@
                 TextoBoton:
                     text: 'Crear una cuenta'
 
+            # BOTÓN «Seguir sin cuenta (solo mirar)»: entra a la lista sin cuenta.
             MDButton:
                 style: 'text'
                 pos_hint: {'center_x': .5}

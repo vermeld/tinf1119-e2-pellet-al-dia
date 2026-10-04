@@ -6,6 +6,7 @@ from kivy.properties import NumericProperty, StringProperty
 from kivymd.uix.screen import MDScreen
 
 
+# Lógica de la PANTALLA PERFIL (interfaz en kv/perfil.kv).
 class PantallaPerfil(MDScreen):
     inicial = StringProperty("")
     usuario = StringProperty("")
@@ -19,6 +20,7 @@ class PantallaPerfil(MDScreen):
     opiniones = NumericProperty(0)
     utiles = NumericProperty(0)
 
+    # Al entrar: calcula tus puntos, tu nivel y tus aportes.
     def on_pre_enter(self, *args):
         app = App.get_running_app()
         u = app.cuentas.actual

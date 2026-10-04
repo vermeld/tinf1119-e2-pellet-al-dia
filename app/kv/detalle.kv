@@ -1,3 +1,4 @@
+# Estrella que se puede tocar, para calificar al opinar. n = qué estrella es (1 a 5).
 <BotonEstrella@MDIconButton>:
     n: 1
     icon: 'star' if self.parent and self.parent.valor >= self.n else 'star-outline'
@@ -7,6 +8,8 @@
     font_size: sp(30)
     on_release: self.parent.valor = self.n
 
+# PANTALLA DETALLE: se abre al tocar un punto en la lista o el botón «Detalle» del mapa.
+# La lógica está en screens/detalle.py.
 <PantallaDetalle>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -16,6 +19,7 @@
         MDTopAppBar:
             type: 'small'
             MDTopAppBarLeadingButtonContainer:
+                # BOTÓN «←» (volver): regresa a la pantalla anterior.
                 MDActionTopAppBarButton:
                     icon: 'arrow-left'
                     on_release: app.volver()
@@ -31,6 +35,7 @@
                 padding: [dp(16), dp(8), dp(16), dp(24)]
                 spacing: dp(14)
 
+                # Nombre del punto, en grande.
                 MDLabel:
                     id: nombre
                     font_style: 'Headline'
@@ -44,6 +49,7 @@
                         icon: 'comment-text-outline'
                         theme_icon_color: 'Secondary'
                         pos_hint: {'center_y': .5}
+                    # Promedio de las opiniones, ej. «Opiniones: 4,5 de 5 (2)».
                     TextoSuave:
                         id: estrellas_txt
                         pos_hint: {'center_y': .5}
@@ -51,6 +57,7 @@
                     id: subtitulo
 
                 # Estado grande, con color + ícono + texto (no depende solo del color)
+                # TARJETA DE ESTADO: verde (hay), roja (sin stock) o ámbar (dato viejo).
                 MDCard:
                     style: 'filled'
                     size_hint_y: None
@@ -87,6 +94,7 @@
                             adaptive_height: True
 
                 # Confiabilidad del dato de stock
+                # TARJETA DE CONFIABILIDAD: estrellas de 0 a 5 (el cálculo está en app/confianza.py).
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -124,6 +132,7 @@
                         role: 'small'
                         theme_text_color: 'Secondary'
                         adaptive_height: True
+                    # BOTÓN «¿Cómo se calcula?»: explica la fórmula de las estrellas.
                     MDButton:
                         style: 'text'
                         on_release: root.explicar_confianza()
@@ -132,6 +141,7 @@
                         MDButtonText:
                             text: '¿Cómo se calcula?'
 
+                # TARJETA de datos: dirección, distancia, horario y quién lo vio.
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -153,6 +163,7 @@
                         id: visto
                         icono: 'account-eye'
 
+                # BOTÓN «Cómo llegar» del detalle: va al mapa y pregunta si vas a pie o en auto.
                 BotonAncho:
                     theme_bg_color: 'Custom'
                     md_bg_color: app.C_RUTA
@@ -165,6 +176,7 @@
                         text: 'Cómo llegar'
                         theme_text_color: 'Custom'
                         text_color: 1, 1, 1, 1
+                # BOTÓN «Ver en el mapa»: muestra el punto en el mapa.
                 BotonAncho:
                     style: 'outlined'
                     on_release: app.ver_en_mapa(root.punto_id)
@@ -181,6 +193,7 @@
                 MDBoxLayout:
                     adaptive_height: True
                     spacing: dp(8)
+                    # BOTÓN «Sigue habiendo» (verde): confirma que todavía hay stock.
                     MDButton:
                         style: 'filled'
                         theme_width: 'Custom'
@@ -197,6 +210,7 @@
                             text: 'Sigue habiendo'
                             theme_text_color: 'Custom'
                             text_color: 1, 1, 1, 1
+                    # BOTÓN «Ya no hay» (rojo): avisa que se acabó.
                     MDButton:
                         style: 'filled'
                         theme_width: 'Custom'
@@ -218,6 +232,7 @@
                 Titulo:
                     id: titulo_opiniones
                     text: 'Opiniones de vecinos'
+                # LISTA DE OPINIONES: detalle.py agrega aquí una tarjeta (OpinionCard) por opinión.
                 MDBoxLayout:
                     id: opiniones
                     orientation: 'vertical'
@@ -225,6 +240,7 @@
                     spacing: dp(8)
 
                 # Escribir opinión (solo con sesión)
+                # TARJETA «Deja tu opinión»: solo se ve si entraste con tu cuenta.
                 MDCard:
                     style: 'filled'
                     orientation: 'vertical'
@@ -239,6 +255,7 @@
                         text: 'Edita tu opinión' if root.tiene_opinion else 'Deja tu opinión'
                     TextoSuave:
                         text: '¿Cómo calificas este punto? (atención, precio, si el dato era correcto)'
+                    # ESTRELLAS PARA CALIFICAR (1 a 5): al tocar una estrella cambia 'valor'.
                     MDBoxLayout:
                         id: selector_estrellas
                         valor: 0
@@ -259,16 +276,19 @@
                     MDBoxLayout:
                         adaptive_height: True
                         spacing: dp(6)
+                        # BOTÓN «Sí había» de la opinión (opcional, también suma un reporte).
                         MDButton:
                             style: 'filled' if root.mi_reporte == 'si' else 'outlined'
                             on_release: root.mi_reporte = '' if root.mi_reporte == 'si' else 'si'
                             MDButtonText:
                                 text: 'Sí había'
+                        # BOTÓN «No había» de la opinión.
                         MDButton:
                             style: 'filled' if root.mi_reporte == 'no' else 'outlined'
                             on_release: root.mi_reporte = '' if root.mi_reporte == 'no' else 'no'
                             MDButtonText:
                                 text: 'No había'
+                    # CAMPO de texto de la opinión.
                     MDTextField:
                         id: texto_opinion
                         mode: 'outlined'
@@ -282,6 +302,7 @@
                     Widget:
                         size_hint_y: None
                         height: dp(6)
+                    # Aquí aparece el error si falta algo (ej. «Elige de 1 a 5 estrellas»).
                     MDLabel:
                         id: error_opinion
                         text: ''
@@ -289,6 +310,7 @@
                         theme_text_color: 'Custom'
                         text_color: app.C_NOHAY
                         adaptive_height: True
+                    # BOTÓN «Publicar opinión»: guarda la opinión (publicar_opinion en detalle.py).
                     BotonAncho:
                         on_release: root.publicar_opinion()
                         MDButtonIcon:
@@ -297,6 +319,7 @@
                             text: 'Actualizar opinión' if root.tiene_opinion else 'Publicar opinión'
 
                 # Invitación a entrar (sin sesión)
+                # TARJETA para quien no tiene cuenta: invita a entrar o a crear una.
                 MDCard:
                     style: 'outlined'
                     orientation: 'vertical'
@@ -312,11 +335,13 @@
                     MDBoxLayout:
                         adaptive_height: True
                         spacing: dp(8)
+                        # BOTÓN «Entrar» (desde el detalle).
                         MDButton:
                             style: 'filled'
                             on_release: app.ir_a('entrar')
                             MDButtonText:
                                 text: 'Entrar'
+                        # BOTÓN «Crear cuenta» (desde el detalle).
                         MDButton:
                             style: 'outlined'
                             on_release: app.ir_a('registro')

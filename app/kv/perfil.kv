@@ -1,3 +1,4 @@
+# Cuadrito con un número y su etiqueta (ej. «1 · Reportes de stock»).
 <Dato@MDCard>:
     valor: '0'
     etiqueta: ''
@@ -20,6 +21,7 @@
         theme_text_color: 'Secondary'
         halign: 'center'
 
+# PANTALLA PERFIL: la tercera pestaña. La lógica está en screens/perfil.py.
 <PantallaPerfil>:
     md_bg_color: app.theme_cls.surfaceColor
 
@@ -55,6 +57,7 @@
                         adaptive_height: True
                         spacing: dp(14)
                         # Avatar: inicial en un círculo
+                        # AVATAR: la inicial de tu nombre dentro de un círculo.
                         MDLabel:
                             text: root.inicial
                             font_style: 'Headline'
@@ -98,6 +101,7 @@
                                     adaptive_height: True
                                     pos_hint: {'center_y': .5}
 
+                    # TARJETA DE REPUTACIÓN: tus puntos y la barra hasta el siguiente nivel.
                     MDCard:
                         style: 'outlined'
                         orientation: 'vertical'
@@ -115,6 +119,7 @@
                         TextoSuave:
                             text: root.falta_txt
 
+                    # Los 4 cuadritos con tus aportes.
                     MDGridLayout:
                         cols: 2
                         adaptive_height: True
@@ -132,6 +137,7 @@
                             valor: str(root.utiles)
                             etiqueta: 'Votos «útil» recibidos'
 
+                    # TARJETA «Cómo ganar reputación».
                     MDCard:
                         style: 'outlined'
                         orientation: 'vertical'
@@ -155,6 +161,7 @@
                             icono: 'shield-star'
                             texto: 'Nuevo 0 · Confiable 6 · Experto 15 puntos. Los reportes de usuarios Expertos pesan más.'
 
+                    # BOTÓN «¿Tienes dudas?»: abre la pantalla de Ayuda.
                     MDCard:
                         style: 'outlined'
                         size_hint_y: None
@@ -182,6 +189,7 @@
                             icon: 'chevron-right'
                             pos_hint: {'center_y': .5}
 
+                    # BOTÓN «Cerrar sesión».
                     BotonAncho:
                         style: 'outlined'
                         on_release: app.salir()
@@ -214,12 +222,14 @@
                     TextoSuave:
                         text: 'Con una cuenta puedes publicar, reportar el stock, opinar y ganar reputación.'
                         halign: 'center'
+                    # BOTÓN «Entrar» (perfil sin cuenta).
                     BotonAncho:
                         on_release: app.ir_a('entrar')
                         MDButtonIcon:
                             icon: 'login'
                         TextoBoton:
                             text: 'Entrar'
+                    # BOTÓN «Crear una cuenta» (perfil sin cuenta).
                     BotonAncho:
                         style: 'outlined'
                         on_release: app.ir_a('registro')
@@ -228,6 +238,7 @@
                         TextoBoton:
                             text: 'Crear una cuenta'
 
+                    # BOTÓN «¿Tienes dudas?» (Ayuda, también sin cuenta).
                     MDCard:
                         style: 'outlined'
                         size_hint_y: None

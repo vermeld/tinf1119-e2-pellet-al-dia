@@ -21,6 +21,7 @@ from .. import config
 from ..utils import hora_valida, plata
 
 
+# Lógica de la PANTALLA PUBLICAR (formulario). La interfaz está en kv/formulario.kv.
 class PantallaFormulario(MDScreen):
     hay = BooleanProperty(True)
     es_tienda = BooleanProperty(True)
@@ -29,9 +30,11 @@ class PantallaFormulario(MDScreen):
     lat = ObjectProperty(None, allownone=True)
     lon = ObjectProperty(None, allownone=True)
 
+    # Al entrar, borra el mensaje de error anterior.
     def on_pre_enter(self, *args):
         self.ids.error.text = ""
 
+    # BOTÓN de sector: abre el menú de sectores.
     def abrir_comunas(self, boton):
         items = [
             {"text": c, "on_release": lambda c=c: self._elegir_comuna(c)}
@@ -40,19 +43,23 @@ class PantallaFormulario(MDScreen):
         self._menu = MDDropdownMenu(caller=boton, items=items, position="bottom")
         self._menu.open()
 
+    # Al elegir un sector del menú.
     def _elegir_comuna(self, comuna):
         self.comuna = comuna
         self._menu.dismiss()
 
+    # La llama la pantalla «Marca dónde está» al presionar «Usar este lugar».
     def poner_ubicacion(self, lat, lon):
         self.lat, self.lon = lat, lon
         self.ids.error.text = ""
 
+    # BOTÓN «Ahora»: pone la hora actual en el campo.
     def poner_hora_actual(self):
         self.ids.hora.text = datetime.now().strftime("%H:%M")
 
     # ---- validación
 
+    # Marca en rojo el campo con problema y muestra el mensaje de error.
     def _falla(self, campo, mensaje):
         if campo is not None:
             campo.error = True
@@ -60,6 +67,7 @@ class PantallaFormulario(MDScreen):
         self.ids.error.text = mensaje
         return None
 
+    # VALIDACIÓN DEL FORMULARIO: revisa cada campo. Si algo falla, avisa y devuelve None.
     def validar(self):
         """Devuelve el punto armado, o None si algo falta (y muestra el error)."""
         i = self.ids
@@ -113,6 +121,7 @@ class PantallaFormulario(MDScreen):
 
     # ---- publicar
 
+    # BOTÓN «Publicar»: valida y muestra el diálogo con el resumen.
     def revisar(self):
         """Valida y muestra un resumen para confirmar antes de publicar."""
         if not App.get_running_app().requiere_cuenta("publicar un punto"):
@@ -145,6 +154,7 @@ class PantallaFormulario(MDScreen):
         )
         self._dialogo.open()
 
+    # BOTÓN «Publicar» del diálogo: guarda el punto y lo muestra en el mapa.
     def _publicar(self, punto):
         self._dialogo.dismiss()
         app = App.get_running_app()
@@ -153,6 +163,7 @@ class PantallaFormulario(MDScreen):
         app.ver_en_mapa(punto["id"])
         app.avisar("¡Listo! Tu punto ya aparece en el mapa.")
 
+    # Deja el formulario vacío para la próxima vez.
     def limpiar(self):
         i = self.ids
         for campo in (i.nombre, i.direccion, i.sacos, i.precio, i.hora):
@@ -164,6 +175,7 @@ class PantallaFormulario(MDScreen):
         self.combustible = "pellet"
         self.lat = self.lon = None
 
+    # BOTÓN «X»: cancela y vuelve a la lista.
     def cancelar(self):
         self.limpiar()
         App.get_running_app().ir_a("lista", "right")

@@ -132,7 +132,7 @@ pellet/
 ├── FUNDAMENTACION-UX-UI.md     # fundamentación del diseño con evidencia de usuarios
 ├── assets/                     # íconos del mapa (pines, "tú")
 ├── tools/generar_iconos.py     # genera los PNG de assets/
-├── docs/                       # capturas y guion de la presentación
+├── docs/                       # capturas, guion, diálogo para exponer, guía del código e investigación
 └── app/
     ├── pelletapp.py            # MDApp: build(), ScreenManager, barra inferior, datos, acciones
     ├── cuentas.py              # registro, login (hash PBKDF2), reputación y niveles
@@ -164,6 +164,14 @@ al pronóstico oficial (airechile.mma.gob.cl).
 En la maqueta el episodio es un **dato de ejemplo**, y el botón «Simular otro
 día (demo)» lo cambia. En la versión final se obtendría del pronóstico oficial y
 llegaría como notificación, algo que queda fuera del alcance de la E2.
+
+## Guía para leer el código
+
+Cada botón, pestaña, campo y pantalla tiene un comentario con una etiqueta que
+se puede buscar en VS Code con **Ctrl+Shift+F**, por ejemplo `BOTÓN «Cómo llegar»`
+o `PESTAÑA «Mapa»`. La tabla completa, con el archivo y la línea de cada
+elemento, está en [docs/GUIA-DEL-CODIGO.md](docs/GUIA-DEL-CODIGO.md). El diálogo
+para exponer está en [docs/DIALOGO-PRESENTACION.md](docs/DIALOGO-PRESENTACION.md).
 
 ## Capturas
 

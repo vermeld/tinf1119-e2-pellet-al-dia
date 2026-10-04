@@ -15,22 +15,28 @@ from ..widgets import PuntoCard
 TODO_TEMUCO = "Todo Temuco"
 
 
+# Lógica de la PANTALLA LISTA (la interfaz está en kv/lista.kv).
 class PantallaLista(MDScreen):
     solo_con = BooleanProperty(True)
     comuna = StringProperty(TODO_TEMUCO)
 
+    # Cada vez que se entra a la lista se vuelve a armar, por si algo cambió.
     def on_pre_enter(self, *args):
         self.refrescar()
 
+    # Si cambia el filtro «Con stock / Todos», se rearma la lista.
     def on_solo_con(self, *args):
         self.refrescar()
 
+    # Si cambia el sector elegido, se rearma la lista.
     def on_comuna(self, *args):
         self.refrescar()
 
+    # BOTONES «Con stock» y «Todos».
     def poner_filtro(self, solo_con):
         self.solo_con = solo_con
 
+    # BOTÓN de sector: abre el menú desplegable con los sectores.
     def abrir_comunas(self, boton):
         app = App.get_running_app()
         items = [
@@ -40,10 +46,12 @@ class PantallaLista(MDScreen):
         self._menu = MDDropdownMenu(caller=boton, items=items, position="bottom")
         self._menu.open()
 
+    # Al elegir un sector del menú.
     def _elegir_comuna(self, comuna):
         self.comuna = comuna
         self._menu.dismiss()
 
+    # ARMA LA LISTA: filtra por stock y sector, ordena por cercanía y crea una tarjeta por punto.
     def refrescar(self, *args):
         if "lista" not in self.ids:
             return  # aún no se aplica el .kv
@@ -77,6 +85,7 @@ class PantallaLista(MDScreen):
         for p in puntos:
             contenedor.add_widget(self._tarjeta(p, app))
 
+    # Crea la tarjeta (PuntoCard) de un punto con todos sus textos y colores.
     def _tarjeta(self, p, app):
         d = describir(p)
         c = app.confianza(p)

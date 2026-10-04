@@ -5,16 +5,20 @@ from kivy.app import App
 from kivymd.uix.screen import MDScreen
 
 
+# Lógica de la PANTALLA ENTRAR (interfaz en kv/entrar.kv).
 class PantallaEntrar(MDScreen):
 
+    # Al entrar: borra la contraseña y los errores.
     def on_pre_enter(self, *args):
         self.ids.clave.text = ""
         self.ids.error.text = ""
         self.ids.usuario.error = self.ids.clave.error = False
 
+    # BOTÓN «Mostrar / Ocultar contraseña».
     def alternar_ver_clave(self):
         self.ids.clave.password = not self.ids.clave.password
 
+    # BOTÓN «Entrar»: revisa que no falten datos y prueba la contraseña.
     def entrar(self):
         i = self.ids
         i.usuario.error = i.clave.error = False
@@ -32,6 +36,7 @@ class PantallaEntrar(MDScreen):
             i.clave.text = ""
             i.error.text = msj
 
+    # BOTÓN «Seguir sin cuenta (solo mirar)».
     def solo_mirar(self):
         app = App.get_running_app()
         app.ir_a("lista")

@@ -1,6 +1,7 @@
 # Pantalla Mapa. Las tarjetas flotantes se "esconden" moviéndolas fuera de la
 # pantalla (pos_hint), así no bloquean los toques sobre el mapa.
 
+# Estilo de los botones redondos blancos del mapa (+, − y centrar).
 <BotonMapa@MDIconButton>:
     style: 'filled'
     theme_bg_color: 'Custom'
@@ -8,13 +9,18 @@
     theme_icon_color: 'Custom'
     icon_color: app.theme_cls.primaryColor
 
+# PANTALLA MAPA: la pestaña del medio.
+# La lógica (pines, rutas y seguir tu posición) está en screens/mapa.py.
 <PantallaMapa>:
+    # EL MAPA de Temuco (clase MapaPellet en app/mapa.py).
+    # Con doble toque se mueve tu ubicación simulada (en el computador).
     MapaPellet:
         id: mapa
         double_tap_zoom: False
         on_doble_toque: root.doble_toque(*args[1:])
 
     # ---- barra superior: título y filtros
+    # TARJETA de arriba con el título y los filtros. Se esconde mientras navegas (top: 3).
     MDCard:
         style: 'elevated'
         orientation: 'vertical'
@@ -42,11 +48,13 @@
         MDBoxLayout:
             adaptive_height: True
             spacing: dp(8)
+            # BOTÓN «Todos» del mapa: muestra todos los pines.
             MDButton:
                 style: 'outlined' if root.solo_con else 'filled'
                 on_release: root.solo_con = False
                 MDButtonText:
                     text: 'Todos'
+            # BOTÓN «Solo con stock» del mapa: deja solo los pines donde hay.
             MDButton:
                 style: 'filled' if root.solo_con else 'outlined'
                 on_release: root.solo_con = True
@@ -54,12 +62,15 @@
                     icon: 'check-circle'
                 MDButtonText:
                     text: 'Solo con stock'
+        # Texto que avisa si se usa el GPS o la ubicación simulada.
         TextoSuave:
             text: 'GPS activo' if app.hay_gps else 'Ubicación simulada · doble toque en el mapa para moverte'
             font_style: 'Body'
             role: 'small'
 
     # ---- banner de navegación (azul, como en las apps de mapas)
+    # BANNER AZUL de navegación: metros y minutos que faltan.
+    # Solo aparece mientras vas hacia un punto.
     MDCard:
         style: 'filled'
         size_hint: .94, None
@@ -70,6 +81,7 @@
         theme_bg_color: 'Custom'
         md_bg_color: app.C_RUTA
         pos_hint: {'center_x': .5, 'top': .985 if root.navegando or root.buscando_ruta else 3}
+        # Ícono de auto o de persona caminando, según lo que elegiste.
         MDIcon:
             icon: 'car' if root.modo == 'auto' else 'walk'
             font_size: sp(34)
@@ -98,22 +110,27 @@
                 shorten: True
 
     # ---- botones del mapa (derecha)
+    # Columna de botones a la derecha del mapa.
     MDBoxLayout:
         orientation: 'vertical'
         adaptive_size: True
         spacing: dp(10)
         pos_hint: {'right': .97, 'center_y': .5}
+        # BOTÓN «+»: acercar el mapa (zoom).
         BotonMapa:
             icon: 'plus'
             on_release: root.acercar(1)
+        # BOTÓN «−»: alejar el mapa.
         BotonMapa:
             icon: 'minus'
             on_release: root.acercar(-1)
+        # BOTÓN «centrar en mí» (la mira): vuelve el mapa a tu ubicación.
         BotonMapa:
             icon: 'crosshairs-gps'
             on_release: root.centrar_en_mi()
 
     # ---- tarjeta del punto seleccionado
+    # TARJETA DEL PUNTO SELECCIONADO: aparece abajo al tocar un pin.
     MDCard:
         style: 'elevated'
         orientation: 'vertical'
@@ -132,6 +149,7 @@
                 bold: True
                 adaptive_height: True
                 pos_hint: {'center_y': .5}
+            # BOTÓN «X»: cierra la tarjeta del punto.
             MDIconButton:
                 icon: 'close'
                 pos_hint: {'center_y': .5}
@@ -151,18 +169,21 @@
                 text_color: root.sel_color
                 adaptive_height: True
                 pos_hint: {'center_y': .5}
+        # Fila con las estrellas de confiabilidad y las opiniones del punto.
         FilaConfianza:
             valor: root.sel_conf_valor
             color: root.sel_conf_color
             color_texto: root.sel_conf_color_texto
             numero: root.sel_conf_numero
             opiniones: root.sel_estrellas
+        # Qué vende, tipo, sector y distancia a pie.
         TextoSuave:
             text: root.sel_distancia
         MDBoxLayout:
             adaptive_height: True
             spacing: dp(8)
             padding: [0, dp(6), 0, 0]
+            # BOTÓN «Detalle»: abre la pantalla de detalle del punto.
             MDButton:
                 style: 'outlined'
                 on_release: app.ver_detalle(root.sel_id)
@@ -170,6 +191,8 @@
                     icon: 'information-outline'
                 MDButtonText:
                     text: 'Detalle'
+            # BOTÓN «Cómo llegar» (azul): pregunta si vas caminando o en auto
+            # (elegir_modo en screens/mapa.py).
             MDButton:
                 style: 'filled'
                 theme_bg_color: 'Custom'
@@ -186,6 +209,7 @@
                     bold: True
 
     # ---- tarjeta de navegación
+    # TARJETA DE NAVEGACIÓN: aparece abajo mientras vas a un punto.
     MDCard:
         style: 'elevated'
         orientation: 'vertical'
@@ -197,6 +221,7 @@
         pos_hint: {'center_x': .5, 'y': .02 if root.navegando or root.buscando_ruta else -3}
         TextoSuave:
             text: ('Calculando la ruta en auto…' if root.modo == 'auto' else 'Calculando la ruta a pie…') if root.buscando_ruta else root.nav_nota
+        # Barra de progreso del viaje.
         MDLinearProgressIndicator:
             size_hint_y: None
             height: dp(6)
@@ -205,6 +230,8 @@
         MDBoxLayout:
             adaptive_height: True
             spacing: dp(8)
+            # BOTÓN «Simular caminata» / «Simular viaje» / «Pausar»: mueve tu punto por la ruta.
+            # Solo se usa en el computador, porque no tiene GPS.
             MDButton:
                 style: 'tonal'
                 disabled: app.hay_gps or not root.navegando
@@ -214,6 +241,7 @@
                     icon: 'pause' if root.simulando else 'play'
                 MDButtonText:
                     text: 'Pausar' if root.simulando else ('Simular viaje' if root.modo == 'auto' else 'Simular caminata')
+            # BOTÓN «Terminar»: corta la navegación y borra la ruta.
             MDButton:
                 style: 'outlined'
                 on_release: root.terminar_navegacion()

@@ -14,6 +14,7 @@ URL_OFICIAL = "https://airechile.mma.gob.cl"
 # orden de menor a mayor gravedad
 ORDEN = ["bueno", "alerta", "preemergencia", "emergencia"]
 
+# Texto, color, ícono y consejos de cada nivel del PDA.
 NIVELES = {
     "bueno": {
         "titulo": "Sin episodio",
@@ -61,6 +62,7 @@ NIVELES = {
 }
 
 
+# La usa el BOTÓN «Simular otro día (demo)».
 def siguiente(nivel):
     """Para la demo: pasa al siguiente episodio (bueno → alerta → … → bueno)."""
     return ORDEN[(ORDEN.index(nivel) + 1) % len(ORDEN)]

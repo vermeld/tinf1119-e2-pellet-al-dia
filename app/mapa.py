@@ -18,16 +18,19 @@ ASSETS = os.path.join(os.path.dirname(__file__), "..", "assets")
 downloader.USER_AGENT = config.USER_AGENT
 
 
+# Ruta de un ícono de la carpeta assets (pines y punto azul).
 def icono(nombre):
     return os.path.join(ASSETS, nombre + ".png")
 
 
+# Carpeta donde se guardan las imágenes del mapa ya descargadas.
 def carpeta_cache():
     cache = os.path.join(App.get_running_app().user_data_dir, "cache_mapa")
     os.makedirs(cache, exist_ok=True)
     return cache
 
 
+# De dónde salen las imágenes del mapa (estilo limpio de Esri: solo calles).
 def fuente_mapa():
     """Mapa limpio (solo calles y nombres), guardado en caché en la carpeta de la app."""
     cache = carpeta_cache()
@@ -43,6 +46,7 @@ def fuente_mapa():
     )
 
 
+# EL MAPA (se usa en kv/mapa.kv y en kv/elegir.kv).
 class MapaPellet(MapView):
     """MapView centrado en Temuco, con evento de doble toque (lat, lon)."""
 
@@ -56,6 +60,7 @@ class MapaPellet(MapView):
         kwargs.setdefault("zoom", config.ZOOM_INICIAL)
         super().__init__(**kwargs)
 
+    # Detecta el doble toque sobre el mapa.
     def on_touch_down(self, touch):
         if touch.is_double_tap and self.collide_point(*touch.pos):
             c = self.get_latlon_at(touch.x - self.x, touch.y - self.y)
@@ -67,12 +72,14 @@ class MapaPellet(MapView):
         pass
 
 
+# PIN de un punto en el mapa (verde, rojo o ámbar).
 class PinPunto(MapMarker):
     """Pin de un punto de venta; su color depende del stock."""
 
     punto_id = NumericProperty(0)
 
 
+# EL PUNTO AZUL: tú en el mapa.
 class MarcadorYo(MapMarker):
     """Punto azul "tú estás aquí"."""
 
@@ -84,6 +91,7 @@ class MarcadorYo(MapMarker):
         return False  # no tapa los toques al mapa
 
 
+# LA LÍNEA AZUL DE LA RUTA (lo ya recorrido se pinta en gris).
 class RutaLayer(MapLayer):
     """Dibuja la ruta: lo que falta en azul y lo ya caminado en gris."""
 
@@ -101,6 +109,7 @@ class RutaLayer(MapLayer):
         self.ruta = []
         self.canvas.clear()
 
+    # Se redibuja cada vez que mueves el mapa o haces zoom.
     def reposition(self):
         self.canvas.clear()
         mapa = self.parent

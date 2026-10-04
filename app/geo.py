@@ -11,6 +11,7 @@ from .config import VELOCIDAD_CAMINANDO
 RADIO_TIERRA = 6371000  # metros
 
 
+# Distancia en metros entre dos puntos del mapa.
 def distancia(a, b):
     """Distancia en metros entre dos puntos (lat, lon), fórmula de Haversine."""
     lat1, lon1, lat2, lon2 = map(radians, (a[0], a[1], b[0], b[1]))
@@ -18,10 +19,12 @@ def distancia(a, b):
     return 2 * RADIO_TIERRA * asin(sqrt(h))
 
 
+# Largo total de una ruta, en metros.
 def largo(ruta):
     return sum(distancia(ruta[i], ruta[i + 1]) for i in range(len(ruta) - 1))
 
 
+# Dónde quedas después de avanzar X metros por la ruta (lo usa la simulación).
 def punto_en(ruta, metros):
     """Punto de la ruta tras recorrer 'metros' desde el inicio, y el índice del tramo."""
     for i in range(len(ruta) - 1):
@@ -35,6 +38,7 @@ def punto_en(ruta, metros):
     return ruta[-1], len(ruta) - 1
 
 
+# Qué parte de la ruta está más cerca de ti (así se sabe cuánto avanzaste).
 def mas_cercano(ruta, pos, desde=0):
     """Índice del vértice de la ruta más cercano a pos (sin retroceder de 'desde')."""
     mejor, mejor_d = desde, float("inf")
@@ -45,20 +49,24 @@ def mas_cercano(ruta, pos, desde=0):
     return mejor
 
 
+# «850 m» o «1,2 km».
 def texto_distancia(metros):
     if metros < 1000:
         return "%d m" % (round(metros / 10) * 10)
     return ("%.1f km" % (metros / 1000)).replace(".", ",")
 
 
+# Minutos a pie.
 def minutos_caminando(metros):
     return max(1, round(metros / VELOCIDAD_CAMINANDO / 60))
 
 
+# «850 m · 11 min a pie».
 def texto_caminando(metros):
     return "%s · %d min a pie" % (texto_distancia(metros), minutos_caminando(metros))
 
 
+# Lo mismo, pero a pie o en auto según el modo.
 def texto_viaje(metros, velocidad, texto_modo):
     """'1,2 km · 4 min en auto' con la velocidad media de la ruta (m/s)."""
     minutos = max(1, round(metros / velocidad / 60))

@@ -31,6 +31,7 @@ from ..utils import describir
 PIN_POR_COLOR = {"C_HAY": "pin_hay", "C_NOHAY": "pin_nohay", "C_DUDA": "pin_duda"}
 
 
+# Lógica de la PANTALLA MAPA (interfaz en kv/mapa.kv): pines, tarjeta del punto y navegación.
 class PantallaMapa(MDScreen):
     solo_con = BooleanProperty(False)
 
@@ -56,6 +57,8 @@ class PantallaMapa(MDScreen):
     nav_progreso = NumericProperty(0)
     modo = StringProperty("pie")  # 'pie' o 'auto'
 
+    # Se ejecuta una vez, cuando el .kv ya armó la pantalla: crea las capas del mapa
+    # (ruta, pines y tu punto azul) y empieza a seguir tu ubicación.
     def on_kv_post(self, base_widget):
         mapa = self.ids.mapa
         self.capa_ruta = RutaLayer()
@@ -76,14 +79,17 @@ class PantallaMapa(MDScreen):
         app.bind(pos_usuario=self.al_moverse)
         Clock.schedule_once(lambda dt: self.al_moverse(app, app.pos_usuario))
 
+    # Al entrar al mapa se redibujan los pines.
     def on_pre_enter(self, *args):
         self.refrescar()
 
+    # BOTONES «Todos» / «Solo con stock» del mapa: se redibujan los pines.
     def on_solo_con(self, *args):
         self.refrescar()
 
     # ---- pines
 
+    # DIBUJA LOS PINES: uno por punto, verde, rojo o ámbar según el stock.
     def refrescar(self, *args):
         app = App.get_running_app()
         mapa = self.ids.mapa
@@ -104,6 +110,7 @@ class PantallaMapa(MDScreen):
         if self.sel_id:
             self.seleccionar(self.sel_id, centrar=False)
 
+    # Al tocar un PIN: llena la tarjeta de abajo con los datos del punto.
     def seleccionar(self, punto_id, centrar=True):
         app = App.get_running_app()
         p = app.buscar(punto_id)
@@ -127,19 +134,23 @@ class PantallaMapa(MDScreen):
         if centrar:
             self.ids.mapa.center_on(p["lat"], p["lon"])
 
+    # BOTÓN «X» de la tarjeta del punto.
     def cerrar_seleccion(self):
         self.sel_id = 0
 
     # ---- controles del mapa
 
+    # BOTONES «+» y «−» del mapa (zoom).
     def acercar(self, paso):
         mapa = self.ids.mapa
         mapa.zoom = max(3, min(19, mapa.zoom + paso))
 
+    # BOTÓN «centrar en mí».
     def centrar_en_mi(self):
         app = App.get_running_app()
         self.ids.mapa.center_on(*app.pos_usuario)
 
+    # Doble toque en el mapa: en el computador mueve tu ubicación simulada.
     def doble_toque(self, lat, lon):
         """Sin GPS (escritorio) el doble toque mueve tu ubicación simulada."""
         app = App.get_running_app()
@@ -152,6 +163,7 @@ class PantallaMapa(MDScreen):
 
     # ---- navegación
 
+    # BOTÓN «Cómo llegar»: muestra el diálogo «¿Cómo vas a ir?» (Caminando / En auto).
     def elegir_modo(self, punto_id):
         """«Cómo llegar»: pregunta si vas caminando o en auto."""
         app = App.get_running_app()
@@ -187,10 +199,12 @@ class PantallaMapa(MDScreen):
         )
         self._dialogo_modo.open()
 
+    # Al elegir Caminando o En auto en el diálogo.
     def _elegido(self, punto_id, modo):
         self._dialogo_modo.dismiss()
         self.navegar_a(punto_id, modo)
 
+    # Empieza la navegación: pide la ruta al servidor (rutas.py).
     def navegar_a(self, punto_id, modo="pie"):
         app = App.get_running_app()
         p = app.buscar(punto_id)
@@ -205,6 +219,7 @@ class PantallaMapa(MDScreen):
         self.nav_nota = ""
         pedir_ruta(app.pos_usuario, (p["lat"], p["lon"]), modo, self._ruta_lista)
 
+    # Cuando llega la ruta: la dibuja en azul y muestra el banner con lo que falta.
     def _ruta_lista(self, ruta, aproximada, velocidad):
         if not self.buscando_ruta:
             return  # el usuario canceló mientras se calculaba
@@ -225,6 +240,7 @@ class PantallaMapa(MDScreen):
         mapa.center_on(*App.get_running_app().pos_usuario)
         self._actualizar_avance(App.get_running_app().pos_usuario)
 
+    # BOTÓN «Simular caminata» / «Simular viaje» / «Pausar».
     def alternar_simulacion(self):
         app = App.get_running_app()
         if app.ubicacion.simulando:
@@ -233,6 +249,7 @@ class PantallaMapa(MDScreen):
             app.ubicacion.simular(self.ruta, config.MODOS[self.modo]["simulada"])
         self.simulando = app.ubicacion.simulando
 
+    # BOTÓN «Terminar»: corta la navegación.
     def terminar_navegacion(self):
         app = App.get_running_app()
         app.ubicacion.detener()
@@ -244,12 +261,14 @@ class PantallaMapa(MDScreen):
         self.capa_ruta.limpiar()
         self.refrescar()
 
+    # Se ejecuta cada vez que cambia tu posición (GPS o simulada).
     def al_moverse(self, app, pos):
         self.yo.lat, self.yo.lon = pos
         self.capa_yo.reposition()
         if self.navegando:
             self._actualizar_avance(pos)
 
+    # Calcula cuánto falta, pinta en gris lo recorrido y revisa si ya llegaste.
     def _actualizar_avance(self, pos):
         idx = geo.mas_cercano(self.ruta, pos, desde=self.capa_ruta.avance)
         restante = geo.distancia(pos, self.ruta[idx]) + geo.largo(self.ruta[idx:])
@@ -263,6 +282,7 @@ class PantallaMapa(MDScreen):
         if geo.distancia(pos, self.ruta[-1]) <= config.MODOS[self.modo]["llegada"]:
             self._llegar()
 
+    # Mueve el mapa para que tu punto no se salga de la pantalla.
     def _seguir(self, pos):
         """Recentra el mapa solo si te acercas al borde (evita que 'tiemble')."""
         mapa = self.ids.mapa
@@ -271,6 +291,7 @@ class PantallaMapa(MDScreen):
         if not (mapa.x + mx < x < mapa.right - mx and mapa.y + my < y < mapa.top - my):
             mapa.center_on(*pos)
 
+    # Al llegar: muestra el diálogo «¡Llegaste! ¿Había stock?».
     def _llegar(self):
         app = App.get_running_app()
         punto_id = self.destino_id

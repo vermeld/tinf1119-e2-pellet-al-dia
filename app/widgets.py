@@ -7,10 +7,12 @@ from kivymd.uix.card import MDCard
 from kivymd.uix.navigationbar import MDNavigationItem
 
 
+# La raíz de la app: pantallas arriba y barra de pestañas abajo (kv/raiz.kv).
 class Raiz(MDBoxLayout):
     """Pantallas + barra de navegación inferior (kv/raiz.kv)."""
 
 
+# Cada PESTAÑA de la barra de abajo (Lista, Mapa, Perfil).
 class ItemNav(MDNavigationItem):
     """Pestaña de la barra inferior; 'pantalla' es el nombre de la pantalla que abre."""
 
@@ -19,6 +21,7 @@ class ItemNav(MDNavigationItem):
     texto = StringProperty("")
 
 
+# TARJETA DE PUNTO de la lista (su diseño está en kv/widgets.kv).
 class PuntoCard(MDCard):
     """Tarjeta de un punto de venta. Al tocarla se abre el detalle."""
 
@@ -40,6 +43,7 @@ class PuntoCard(MDCard):
     estrellas_txt = StringProperty("")       # promedio de opiniones
 
 
+# TARJETA DE OPINIÓN del detalle (diseño en kv/widgets.kv).
 class OpinionCard(MDCard):
     """Opinión de un usuario sobre un punto, con botones Útil / No útil."""
 

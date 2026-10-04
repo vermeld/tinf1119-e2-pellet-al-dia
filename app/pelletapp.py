@@ -58,10 +58,13 @@ if platform not in ("android", "ios"):
     Window.size = (config.VENTANA_ANCHO, config.VENTANA_ALTO)
 
 
+# Fecha y hora actual en texto (así se guarda en los reportes y opiniones).
 def ahora():
     return datetime.now().isoformat(timespec="seconds")
 
 
+# LA APP COMPLETA. Aquí se arman las pantallas, se guardan los datos y se maneja la
+# navegación. Los botones de los .kv llaman a funciones de esta clase con «app.algo()».
 class PelletApp(MDApp):
     title = "Pellet al Día"
 
@@ -90,6 +93,8 @@ class PelletApp(MDApp):
     con_sesion = BooleanProperty(False)
     nombre_usuario = StringProperty("")
 
+    # build() se ejecuta una vez al abrir la app: carga los datos y las cuentas,
+    # lee los archivos .kv y crea todas las pantallas dentro del ScreenManager.
     def build(self):
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = config.PALETA
@@ -126,11 +131,13 @@ class PelletApp(MDApp):
         self.sm.transition.duration = 0.2
         return raiz
 
+    # Cuando la ventana ya está abierta: enciende el GPS (solo en el celular).
     def on_start(self):
         self.ubicacion.iniciar()
 
     # ---- datos
 
+    # Lee los puntos guardados en el archivo JSON (la primera vez usa los de ejemplo).
     def cargar(self):
         puntos = None
         if os.path.exists(self.archivo):
@@ -148,6 +155,7 @@ class PelletApp(MDApp):
             p.setdefault("combustible", "pellet")
         return puntos
 
+    # Guarda los puntos en el archivo JSON para que no se pierdan al cerrar.
     def guardar(self):
         try:
             with open(self.archivo, "w", encoding="utf-8") as f:
@@ -155,21 +163,26 @@ class PelletApp(MDApp):
         except OSError:
             pass  # sin permisos de escritura: la sesión sigue funcionando en memoria
 
+    # Número para un punto nuevo (el mayor que existe + 1).
     def nuevo_id(self):
         return max([p["id"] for p in self.puntos], default=0) + 1
 
+    # Busca un punto por su número (id).
     def buscar(self, punto_id):
         for p in self.puntos:
             if p["id"] == punto_id:
                 return p
         return None
 
+    # Estrellas de confiabilidad de un punto (el cálculo está en confianza.py).
     def confianza(self, p):
         return confianza.calcular(p, self.cuentas, self.puntos)
 
+    # Nivel de reputación de un usuario: Nuevo, Confiable o Experto.
     def nivel(self, uid):
         return self.cuentas.nivel(uid, self.puntos)
 
+    # Cuando cambia el episodio del PDA, actualiza el título, el color y el ícono del aviso.
     def on_episodio(self, app, valor):
         n = pda.NIVELES[valor]
         self.titulo_episodio = n["titulo"]
@@ -179,15 +192,18 @@ class PelletApp(MDApp):
 
     # ---- cuentas
 
+    # Actualiza si hay alguien conectado y su nombre (los .kv lo usan para mostrar u ocultar cosas).
     def _actualizar_sesion(self):
         u = self.cuentas.actual
         self.con_sesion = u is not None
         self.nombre_usuario = u["nombre"] if u else ""
 
+    # Número del usuario conectado (None si nadie entró).
     @property
     def uid(self):
         return self.cuentas.sesion_id
 
+    # Crear cuenta: la llama el BOTÓN «Crear mi cuenta» (screens/registro.py).
     def registrar(self, nombre, usuario, clave):
         ok, msj = self.cuentas.registrar(nombre, usuario, clave)
         if ok:
@@ -196,6 +212,7 @@ class PelletApp(MDApp):
             self.avisar(msj)
         return ok, msj
 
+    # Iniciar sesión: la llama el BOTÓN «Entrar» (screens/entrar.py).
     def entrar(self, usuario, clave):
         ok, msj = self.cuentas.entrar(usuario, clave)
         if ok:
@@ -204,11 +221,14 @@ class PelletApp(MDApp):
             self.avisar(msj)
         return ok, msj
 
+    # Cerrar sesión: la llama el BOTÓN «Cerrar sesión» del perfil.
     def salir(self):
         self.cuentas.salir()
         self._actualizar_sesion()
         self.ir_a("entrar", "right")
 
+    # Si nadie entró, muestra el diálogo «Necesitas una cuenta» y devuelve False.
+    # Se usa antes de publicar, reportar, opinar o votar.
     def requiere_cuenta(self, para_que):
         """True si hay sesión. Si no, explica por qué hace falta y ofrece entrar."""
         if self.con_sesion:
@@ -239,6 +259,7 @@ class PelletApp(MDApp):
 
     # ---- acciones de la comunidad (todas requieren sesión)
 
+    # Guarda un punto nuevo publicado desde el formulario.
     def agregar_punto(self, punto):
         u = self.cuentas.actual
         punto.update({
@@ -249,6 +270,8 @@ class PelletApp(MDApp):
         self.puntos.insert(0, punto)
         self.guardar()
 
+    # BOTONES «Sigue habiendo» / «Ya no hay» (y «¿Había stock?» al llegar):
+    # guarda el reporte, cambia el estado del punto y así cambian sus estrellas.
     def confirmar(self, punto_id, hay):
         """Un usuario reporta si hay o no hay pellet. Mantiene vivo el mapa."""
         p = self.buscar(punto_id)
@@ -265,9 +288,11 @@ class PelletApp(MDApp):
         self.guardar()
         return True
 
+    # La opinión que ya escribió el usuario en este punto, si existe.
     def mi_opinion(self, p):
         return next((c for c in p["comentarios"] if c["uid"] == self.uid), None)
 
+    # BOTÓN «Publicar opinión»: guarda o reemplaza la opinión del usuario.
     def opinar(self, punto_id, estrellas, texto, hay=None):
         """Crea o reemplaza la opinión del usuario. 'hay' opcional también reporta stock."""
         p = self.buscar(punto_id)
@@ -287,6 +312,7 @@ class PelletApp(MDApp):
             self.guardar()
         return True
 
+    # BOTONES «Útil» / «No útil» de una opinión.
     def votar(self, punto_id, comentario_id, valor):
         """valor: 1 = útil, -1 = no útil. Votar lo mismo otra vez quita el voto."""
         p = self.buscar(punto_id)
@@ -305,9 +331,12 @@ class PelletApp(MDApp):
 
     # ---- navegación
 
+    # Sectores para el menú, con «Todo Temuco» al principio.
     def opciones_sector(self):
         return ["Todo Temuco"] + list(config.SECTORES)
 
+    # CAMBIAR DE PANTALLA. Todos los botones que llevan a otra pantalla usan esta función.
+    # También esconde la barra de abajo en Entrar y Crear cuenta, y marca la pestaña activa.
     def ir_a(self, pantalla, direccion=None):
         actual = self.sm.current
         if direccion is None:
@@ -329,10 +358,12 @@ class PelletApp(MDApp):
             for item in self.nav.children:
                 item.active = item.pantalla == pantalla
 
+    # Se ejecuta al tocar una PESTAÑA de la barra de abajo (Lista, Mapa o Perfil).
     def al_cambiar_pestana(self, item):
         if self.sm.current != item.pantalla:
             self.ir_a(item.pantalla)
 
+    # Abre el detalle de un punto (al tocar una tarjeta o el BOTÓN «Detalle» del mapa).
     def ver_detalle(self, punto_id):
         if self.sm.current != "detalle":
             self.anterior = self.sm.current
@@ -342,17 +373,21 @@ class PelletApp(MDApp):
             detalle.on_pre_enter()  # ya estaba abierta: on_pre_enter no se dispara solo
         self.ir_a("detalle", "left")
 
+    # BOTÓN «←» del detalle: vuelve a la pantalla de donde se vino.
     def volver(self):
         self.ir_a(self.anterior, "right")
 
+    # BOTÓN «Ver en el mapa»: va al mapa y selecciona el punto.
     def ver_en_mapa(self, punto_id):
         self.ir_a("mapa")
         self.sm.get_screen("mapa").seleccionar(punto_id)
 
+    # BOTÓN «Cómo llegar» del detalle: va al mapa y pregunta si vas a pie o en auto.
     def como_llegar(self, punto_id):
         self.ir_a("mapa")
         self.sm.get_screen("mapa").elegir_modo(punto_id)
 
+    # Mensaje corto que aparece abajo (Snackbar), ej. «¡Gracias! …».
     def avisar(self, texto):
         MDSnackbar(
             MDSnackbarText(text=texto),
@@ -362,9 +397,11 @@ class PelletApp(MDApp):
             duration=2.5,
         ).open()
 
+    # En el celular: guarda los datos si la app pasa a segundo plano.
     def on_pause(self):
         self.guardar()
         return True
 
+    # Al cerrar la app: guarda los datos.
     def on_stop(self):
         self.guardar()
