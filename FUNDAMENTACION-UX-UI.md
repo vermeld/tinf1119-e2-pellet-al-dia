@@ -2,8 +2,7 @@
 
 Proyecto individual de Gabriel Neculman para TINF1119 Desarrollo Móvil (A+S), evaluación E2.
 El detalle completo de la investigación está en la *Plantilla de Investigación de
-Necesidades y Problemas Reales* y la pauta de entrevista, ambas en
-[docs/investigacion/](docs/investigacion/). Este documento resume esa
+Necesidades y Problemas Reales* y la pauta de entrevista, que se entregan aparte. Este documento resume esa
 evidencia y muestra cómo se tradujo en la interfaz.
 
 ## a) Metodología de investigación

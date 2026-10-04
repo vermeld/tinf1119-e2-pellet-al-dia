@@ -24,9 +24,8 @@ especialmente las que tienen niños, adultos mayores o personas con problemas
 respiratorios. Las personas consultadas tienen entre 18 y más de 60 años, y la
 de más edad es la que más esfuerzo invierte en conseguir combustible. El
 resumen de la investigación está en
-[FUNDAMENTACION-UX-UI.md](FUNDAMENTACION-UX-UI.md) y la evidencia en
-[docs/investigacion/](docs/investigacion/): la pauta de entrevista de 15
-preguntas y la plantilla de investigación completa.
+[FUNDAMENTACION-UX-UI.md](FUNDAMENTACION-UX-UI.md) y la evidencia (pauta de entrevista, respuestas y plantilla de investigación)
+se entrega aparte.
 
 ## Ejecutar
 
@@ -132,7 +131,7 @@ pellet/
 ├── FUNDAMENTACION-UX-UI.md     # fundamentación del diseño con evidencia de usuarios
 ├── assets/                     # íconos del mapa (pines, "tú")
 ├── tools/generar_iconos.py     # genera los PNG de assets/
-├── docs/                       # capturas, guion, diálogo para exponer, guía del código e investigación
+├── docs/                       # capturas, guion, diálogo para exponer y guía del código
 └── app/
     ├── pelletapp.py            # MDApp: build(), ScreenManager, barra inferior, datos, acciones
     ├── cuentas.py              # registro, login (hash PBKDF2), reputación y niveles
