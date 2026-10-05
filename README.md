@@ -195,10 +195,25 @@ o `PESTAÑA «Mapa»`.
 
 ## Declaración de uso de IA
 
-En el desarrollo se usó un asistente de inteligencia artificial para:
-- Programar la app en Kivy + KivyMD (archivos `.py` y `.kv`): mapa, rutas, cuentas, opiniones, confiabilidad y PDA.
-- Depurar un error de KivyMD 2.0.0.
-- Redactar y ordenar la documentación, incluido este resumen de la investigación.
+**Herramienta:** Claude, de Anthropic, usada a través de Claude Code (asistente de
+programación en el computador), entre el 28 de septiembre y el 5 de octubre de 2026.
 
-Las ideas de la app, las decisiones de qué incluir y la investigación con
-usuarios (pauta de entrevista, formulario y respuestas) son del estudiante.
+### Qué se hizo con IA y qué hizo el estudiante
+
+| Parte del trabajo | Con IA (Claude) | Del estudiante |
+|---|---|---|
+| Idea y problema | No | Idea de la app, elección del problema (pellet y PDA en Temuco) y el pitch inicial |
+| Investigación con usuarios | No | Pauta de entrevista de 15 preguntas, formulario de Google y respuestas de 3 personas reales |
+| Fundamentación UX/UI | Ordenó las respuestas en hallazgos, matriz y supuestos, y redactó el documento | Aportó los datos y revisó que las citas fueran textuales |
+| Diseño de la app | Propuso cómo traducir cada hallazgo en pantallas y botones | Decidió qué incluir y pidió cambios: lista primero, solo 3 pestañas, Ayuda en el Perfil, estrellas en vez de porcentaje, mapa sin números de casas, ruta a pie o en auto |
+| Código (`.py` y `.kv`) | Escribió el código y lo probó con scripts automáticos | Probó la app, reportó errores (ej. los puntos rojos al hacer clic derecho, datos antiguos) y pidió los comentarios para poder explicarlo |
+| Corrección de errores | Encontró y corrigió un error de KivyMD 2.0.0 (`app/compat.py`) | Reportó los problemas que veía al usar la app |
+| Presentación y diálogo | Armó las diapositivas y el diálogo a partir de la investigación | Revisa, ensaya y expone |
+
+### Cómo se revisó lo que hizo la IA
+
+- Cada cambio se probó abriendo la app y con scripts que recorrían las pantallas y tomaban capturas.
+- Las citas de la fundamentación se compararon con las respuestas originales del formulario.
+- La IA no inventó datos de usuarios: la investigación es real y se marcaron como **supuestos** las decisiones que no tienen respaldo directo.
+- Todo el código tiene comentarios en español (buscables con `BOTÓN «…»`, `PESTAÑA «…»`) para que el estudiante pueda explicar cada parte.
+- Los primeros commits del repositorio llevan la línea `Co-Authored-By: Claude`, que registra que se hicieron con IA.
