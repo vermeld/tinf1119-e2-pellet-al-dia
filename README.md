@@ -215,5 +215,5 @@ programación en el computador), entre el 28 de septiembre y el 5 de octubre de 
 - Cada cambio se probó abriendo la app y con scripts que recorrían las pantallas y tomaban capturas.
 - Las citas de la fundamentación se compararon con las respuestas originales del formulario.
 - La IA no inventó datos de usuarios: la investigación es real y se marcaron como **supuestos** las decisiones que no tienen respaldo directo.
-- Todo el código tiene comentarios en español (buscables con `BOTÓN «…»`, `PESTAÑA «…»`) para que el estudiante pueda explicar cada parte.
+- Todo el código tiene comentarios en español (buscables con `BOTÓN «…»`, `PESTAÑA «…»`) para que la persona pueda entender cada parte.
 - Los primeros commits del repositorio llevan la línea `Co-Authored-By: Claude`, que registra que se hicieron con IA.
